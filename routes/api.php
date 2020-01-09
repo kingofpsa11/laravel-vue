@@ -17,13 +17,19 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::prefix('auth')->group(function () {
-  Route::post('register', 'ProfileController@register');
-  Route::post('login', 'ProfileController@login');
-  Route::get('refresh', 'ProfileController@refresh');
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
 
-  Route::group(['middleware' => 'auth:api'], function(){
-      Route::get('user', 'ProfileController@user');
-      Route::post('logout', 'ProfileController@logout');
-  });
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+
+    });
 });
+
+Route::resource('products', 'ProductController');

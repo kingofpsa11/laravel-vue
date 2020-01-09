@@ -1,5 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+require("./bootstrap");
+
 import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
 // import * as VueGoogleMaps from "vue2-google-maps";
@@ -24,21 +26,6 @@ Vue.use(VueTouch);
 // Vue.component("apexchart", VueApexCharts);
 
 Vue.config.productionTip = false;
-
-Vue.component(
-  "passport-clients",
-  require("./components/passport/Clients.vue").default
-);
-
-Vue.component(
-  "passport-authorized-clients",
-  require("./components/passport/AuthorizedClients.vue").default
-);
-
-Vue.component(
-  "passport-personal-access-tokens",
-  require("./components/passport/PersonalAccessTokens.vue").default
-);
 
 /* eslint-disable no-new */
 new Vue({
