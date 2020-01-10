@@ -48,19 +48,24 @@
           head-variant="dark"
           bordered
           :items="items"
-        ></b-table>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          size="sm"
-          class="my-0"
-          align="fill"
-        ></b-pagination>
+        >
+          <template v-slot:cell(action)="row">
+            <b-button-group>
+              <b-button variant="info" @click="row.toggleDetails">Xem</b-button>
+              <b-button variant="warning">Sửa</b-button>
+            </b-button-group>
+          </template>
+
+          <template v-slot:row-details="row">
+            <b-card>
+              <ul>
+                <li v-for="(value, key) in row.item" :key="key">
+                  {{ key }}: {{ value }}
+                </li>
+              </ul>
+            </b-card>
+          </template>
+        </b-table>
       </b-col>
     </b-row>
   </b-container>
@@ -78,15 +83,14 @@ export default {
     return {
       currentPage: 1,
       totalRows: 1,
-      perPage: 20,
+      perPage: 10,
       pageOptions: [10, 20],
       fields: [
         { key: "category", label: "nhóm" },
         { key: "code", label: "mã sản phẩm" },
         { key: "name", label: "tên sản phẩm" },
         { key: "status", label: "trạng thái" },
-        { key: "view", label: "xem" },
-        { key: "edit", label: "sửa" }
+        { key: "action", label: "xem" }
       ],
       items: [],
       errors: [],
