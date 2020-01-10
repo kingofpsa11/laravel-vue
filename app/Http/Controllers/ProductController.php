@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return new ProductCollection(Product::take(20)->get());
+        return new ProductCollection(Product::orderBy('id','desc')->take(20)->get());
     }
 
     /**
@@ -25,7 +26,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -36,7 +36,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = Product::create($request->all());
+        return new ProductResource($product);
     }
 
     /**

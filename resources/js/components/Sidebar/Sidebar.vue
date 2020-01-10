@@ -12,20 +12,42 @@
     <ul class="nav">
       <NavLink
         header="Dashboard"
-        link="/app/dashboard"
+        link="/dashboard"
         iconName="flaticon-home"
         index="dashboard"
         isHeader
       />
       <NavLink
         :activeItem="activeItem"
+        header="Sản phẩm"
+        link="/products"
+        iconName="flaticon-list"
+        index="products"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/products/create' },
+          { header: 'Danh sách', link: '/products/list' }
+        ]"
+      />
+      <NavLink
+        :activeItem="activeItem"
+        header="Giá"
+        link="/prices"
+        iconName="flaticon-list"
+        index="prices"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/prices/create' },
+          { header: 'Danh sách', link: '/prices/list' }
+        ]"
+      />
+      <NavLink
+        :activeItem="activeItem"
         header="Đơn hàng"
-        link="/app/contracts"
+        link="/contracts"
         iconName="flaticon-list"
         index="contracts"
         :childrenLinks="[
-          { header: 'Tạo mới', link: '/app/contracts/create' },
-          { header: 'Danh sách', link: '/app/contracts/list' }
+          { header: 'Tạo mới', link: '/contracts/create' },
+          { header: 'Danh sách', link: '/contracts/list' }
         ]"
       />
       <NavLink

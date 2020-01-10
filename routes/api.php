@@ -28,8 +28,10 @@ Route::group([
     ], function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
-
     });
 });
 
 Route::resource('products', 'ProductController');
+Route::resource('categories', 'CategoryController');
+Route::resource('prices', 'PriceController');
+Route::resource('contracts', 'ContractController');

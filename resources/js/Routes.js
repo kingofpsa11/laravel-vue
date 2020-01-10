@@ -8,6 +8,11 @@ import ErrorPage from "./pages/Error/Error";
 import ContractCreate from "./pages/Contracts/Create";
 import ContractList from "./pages/Contracts/List";
 
+import ProductCreate from "./pages/Products/Create";
+import ProductList from "./pages/Products/List";
+
+import PriceCreate from "./pages/Prices/Create";
+import PriceList from "./pages/Prices/List";
 // Tables
 import TablesBasicPage from "./pages/Tables/Basic";
 
@@ -39,7 +44,7 @@ export default new Router({
       component: ErrorPage
     },
     {
-      path: "/app",
+      path: "/",
       name: "Layout",
       component: Layout,
       children: [
@@ -47,6 +52,26 @@ export default new Router({
           path: "dashboard",
           name: "AnalyticsPage",
           component: AnalyticsPage
+        },
+        {
+          path: "products/create",
+          name: "Product",
+          component: ProductCreate
+        },
+        {
+          path: "products/list",
+          name: "Product",
+          component: ProductList
+        },
+        {
+          path: "prices/create",
+          name: "Price",
+          component: PriceCreate
+        },
+        {
+          path: "prices/list",
+          name: "Price",
+          component: PriceList
         },
         {
           path: "contracts/create",

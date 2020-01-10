@@ -4,6 +4,7 @@ require("./bootstrap");
 
 import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
+import { ServerTable, ClientTable, Event } from "vue-tables-2";
 // import * as VueGoogleMaps from "vue2-google-maps";
 import VueTouch from "vue-touch";
 // import Trend from "vuetrend";
@@ -15,6 +16,7 @@ import router from "./Routes";
 import App from "./App.vue";
 
 Vue.use(BootstrapVue);
+Vue.use(ClientTable, {}, false, "bootstrap4");
 Vue.use(VueTouch);
 // Vue.use(Trend);
 // Vue.use(VueGoogleMaps, {
