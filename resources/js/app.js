@@ -17,6 +17,7 @@ import App from "./App.vue";
 
 Vue.use(BootstrapVue);
 Vue.use(ClientTable, {}, false, "bootstrap4");
+Vue.use(ServerTable, {}, false, "bootstrap4");
 Vue.use(VueTouch);
 // Vue.use(Trend);
 // Vue.use(VueGoogleMaps, {

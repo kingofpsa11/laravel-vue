@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Contract;
+use App\ContractDetail;
+use App\EloquentVueTables;
 use App\Http\Resources\ContractCollection;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
 class ContractController extends Controller
 {
@@ -13,11 +17,68 @@ class ContractController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ContractCollection(Contract::all());
+        $results = [];
+        extract(request()->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
+        $query = json_decode($query);
+        $data = ContractDetail::with(['contract', 'price.product']);
+        if (isset($query) && $query) {
+            $data = $byColumn == 1 ?
+                $this->filterByColumn($data, $query) :
+                $this->filter($data, $query, $fields);
+        }
+        $count = $data->count();
+        $data->limit($limit)
+            ->skip($limit * ($page - 1));
+        if (isset($orderBy)) {
+            $direction = $ascending == 1 ? 'ASC' : 'DESC';
+            $data->orderBy($orderBy, $direction);
+        }
+        $result = $data->get();
+        foreach ($result as $value) {
+            $results[] = [
+                'customer_id' => $value->contract->customer_id,
+                'number' => $value->contract->number,
+                'price_id' => $value->price_id,
+                'quantity' => $value->quantity,
+                'selling_price' => $value->selling_price,
+                'date' => $value->contract->date,
+                'deadline' => $value->deadline,
+                'order' => $value->order,
+            ];
+        }
+
+        return [
+            'data' => $results,
+            'count' => $count,
+        ];
     }
 
+    protected function filterByColumn($data, $queries)
+    {
+        return $data->where(function ($q) use ($queries) {
+            foreach ($queries as $field => $query) {
+                if (is_string($query)) {
+                    $q->where($field, 'LIKE', "%{$query}%");
+                } else {
+                    $start = Carbon::createFromFormat('Y-m-d', $query['start'])->startOfDay();
+                    $end = Carbon::createFromFormat('Y-m-d', $query['end'])->endOfDay();
+                    $q->whereBetween($field, [$start, $end]);
+                }
+            }
+        });
+    }
+
+  protected function filter($data, $query, $fields)
+  {
+    return $data->where(function ($q) use ($query, $fields) {
+      foreach ($fields as $index => $field) {
+        $method = $index ? 'orWhere' : 'where';
+        $q->{$method}($field, 'LIKE', "%{$query}%");
+      }
+    });
+  }
     /**
      * Show the form for creating a new resource.
      *

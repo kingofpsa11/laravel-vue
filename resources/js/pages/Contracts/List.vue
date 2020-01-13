@@ -9,7 +9,11 @@
     </h2>
     <b-row>
       <b-col>
-        <v-client-table :columns="columns" :data="items" :options="options" />
+        <v-server-table
+          :columns="columns"
+          url="/api/contracts"
+          :options="options"
+        />
       </b-col>
     </b-row>
   </b-container>
@@ -20,29 +24,10 @@ import Vue from "vue";
 
 export default {
   name: "Tables",
-  created() {
-    this.getContractList();
-  },
   data() {
     return {
-      currentPage: 1,
-      totalRows: 1,
-      perPage: 10,
-      pageOptions: [10, 20],
-      // columns: [
-      // { key: "customer", label: "ĐVĐH" },
-      // { key: "number", label: "Số đơn hàng" },
-      // { key: "price_id", label: "tên sản phẩm" },
-      // { key: "quantity", label: "Số lượng" },
-      // { key: "selling_price", label: "Đơn giá" },
-      // { key: "date", label: "Ngày lập" },
-      // { key: "deadline", label: "Tiến độ" },
-      // { key: "order", label: "LXH" },
-      // { key: "status", label: "Trạng thái" },
-      // { key: "action", label: "xem" }
-      // ],
       columns: [
-        "customer",
+        "customer_id",
         "number",
         "price_id",
         "quantity",
@@ -55,17 +40,24 @@ export default {
       ],
       options: {
         headings: {
-          customer: "ĐVDH",
+          customer_id: "ĐVDH",
           number: "Số đơn hàng",
-          price_id: "View Record"
+          price_id: "Tên sản phẩm",
+          quantity: "Số lượng",
+          selling_price: "Đơn giá",
+          date: "Ngày lập",
+          deadline: "Tiến độ",
+          order: "LSX",
+          status: "Trạng thái"
         },
-        editableColumns: ["name"],
-        sortable: ["customer", "number"],
-        filterable: ["name", "code"]
+        filterByColumn: true,
+        templates: {
+          date(h, row) {
+            return moment(row.date).format("DD-MM-YYYY");
+          }
+        }
       },
-      items: [],
-      errors: [],
-      isBusy: false
+      perPage: 25
     };
   },
   methods: {
@@ -74,19 +66,6 @@ export default {
       return `${date.toLocaleString("en-us", { month: "long" })} ${
         dateSet[2]
       }, ${dateSet[3]}`;
-    },
-    getContractList() {
-      axios
-        .get("/api/contracts")
-        .then(response => {
-          this.items = response.data.data;
-          this.totalRows = this.items.length;
-          this.isBusy = true;
-        })
-        .catch(error => {
-          this.errors = error.response.data.errors.name;
-          console.log(this.errors);
-        });
     }
   }
 };
