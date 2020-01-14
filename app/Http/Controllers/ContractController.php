@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Contract;
 use App\ContractDetail;
-use App\EloquentVueTables;
-use App\Http\Resources\ContractCollection;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 
 class ContractController extends Controller
 {
+    protected $contract;
+
+    public function __construct(Contract $contract)
+    {
+        $this->contract = $contract;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,24 +24,30 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         $results = [];
-        extract(request()->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
+        extract($request->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
         $query = json_decode($query);
         $data = ContractDetail::with(['contract', 'price.product']);
+
         if (isset($query) && $query) {
             $data = $byColumn == 1 ?
                 $this->filterByColumn($data, $query) :
                 $this->filter($data, $query, $fields);
         }
+
         $count = $data->count();
         $data->limit($limit)
             ->skip($limit * ($page - 1));
+
         if (isset($orderBy)) {
             $direction = $ascending == 1 ? 'ASC' : 'DESC';
             $data->orderBy($orderBy, $direction);
         }
+
         $result = $data->get();
+
         foreach ($result as $value) {
             $results[] = [
+                'id' => $value->id,
                 'customer_id' => $value->contract->customer_id,
                 'number' => $value->contract->number,
                 'price_id' => $value->price_id,
@@ -79,15 +89,6 @@ class ContractController extends Controller
       }
     });
   }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -97,7 +98,14 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $value = $request->all();
+        $this->contract->fill($value)->save();
+
+        foreach ($request->details as $detail) {
+            $this->contract->contractDetails()->create($detail);
+        }
+
+        return response()->json('success');
     }
 
     /**
@@ -119,7 +127,7 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
-        //
+        
     }
 
     /**

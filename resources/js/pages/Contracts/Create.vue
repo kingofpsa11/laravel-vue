@@ -7,12 +7,12 @@
     <h2 class="page-title">
       Đơn hàng - <span class="fw-semi-bold">Tạo mới</span>
     </h2>
-    <b-form>
+    <b-form @submit="onSubmit">
       <b-row>
         <b-col>
           <b-form-group label="Khách Hàng">
             <b-form-input
-              v-model="form.customer"
+              v-model="form.customer_id"
               type="text"
               required
               placeholder="Nhập khách hàng"
@@ -42,7 +42,11 @@
         </b-col>
         <b-col md="4">
           <b-form-group label="Giá trị đơn hàng">
-            <b-form-input v-model="form.totalValue" type="text"></b-form-input>
+            <b-form-input
+              v-model="form.totalValue"
+              type="text"
+              readonly
+            ></b-form-input>
           </b-form-group>
         </b-col>
       </b-row>
@@ -61,13 +65,13 @@
                 <th class="hidden-sm-down">Ghi chú</th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="row in form.details" :key="row.id">
-                <td>{{ row.id }}</td>
+            <b-tbody>
+              <b-tr v-for="(row, index) in form.details" :key="row.id">
+                <td>{{ index + 1 }}</td>
                 <td>{{ row.code }}</td>
                 <td>
                   <b-form-input
-                    v-model="row.product"
+                    v-model="row.price_id"
                     type="text"
                     required
                   ></b-form-input>
@@ -108,12 +112,16 @@
                   ></b-form-input>
                 </td>
                 <td>
-                  <b-button variant="success">
+                  <b-button
+                    variant="success"
+                    @click="deleteRow(index)"
+                    v-if="count !== 1"
+                  >
                     <i class="fa fa-minus"></i>
                   </b-button>
                 </td>
-              </tr>
-            </tbody>
+              </b-tr>
+            </b-tbody>
           </table>
           <b-button variant="primary" @click="addRow">Thêm dòng</b-button>
           <b-button type="submit" variant="success">Lưu</b-button>
@@ -135,30 +143,42 @@ export default {
   data() {
     return {
       form: {
-        customer: "",
+        customer_id: "",
         number: "",
         details: [
           {
             code: "",
-            product: "",
-            quantity: 0,
-            price: 0,
-            date: "",
+            price_id: "",
+            quantity: null,
+            price: null,
+            date: null,
             supplier: "",
             note: ""
           }
         ]
       },
       newItem: {
-        code: "",
-        product: "",
-        quantity: 0,
-        price: 0,
-        date: "",
-        supplier: "",
-        note: ""
+        code: null,
+        product: null,
+        quantity: null,
+        price: null,
+        date: null,
+        supplier: null,
+        note: null
       }
     };
+  },
+  computed: {
+    count() {
+      return this.form.details.length;
+    },
+    totalValue() {
+      let totalValue = 0;
+      this.form.details.forEach(item => {
+        totalValue += item.price * item.quantity;
+      });
+      return totalValue;
+    }
   },
   methods: {
     parseDate(date) {
@@ -170,6 +190,15 @@ export default {
     addRow(e) {
       e.preventDefault();
       this.form.details.push(this.newItem);
+    },
+    onSubmit(e) {
+      e.preventDefault();
+      axios.post("/api/contracts", this.form).then(res => {
+        console.log(res.data.result);
+      });
+    },
+    deleteRow(index) {
+      this.form.details.splice(index, 1);
     }
   }
 };

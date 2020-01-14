@@ -70,11 +70,6 @@ export default {
   data() {
     return {
       price: {
-        code: "",
-        product_id: "",
-        selling_price: 0,
-        note: "",
-        effective_date: null,
         status: 10
       }
     };

@@ -44,11 +44,6 @@ class Contract extends Model
         return $this->hasMany('App\ManufacturerOrder');
     }
 
-    public function setDateAttribute($value)
-    {
-        $this->attributes['date'] = Carbon::createFromFormat(config('app.date_format'), $value, 'Asia/Bangkok')->format('Y-m-d');
-    }
-
     //    public function setTotalValueAttribute($value)
     //    {
     //        $this->attributes['total_value'] = (int)str_replace('.', '', $value);

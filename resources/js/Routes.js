@@ -55,17 +55,17 @@ export default new Router({
         },
         {
           path: "products/create",
-          name: "Product",
+          name: "ProductCreate",
           component: ProductCreate
         },
         {
           path: "products/list",
-          name: "Product",
+          name: "ProductList",
           component: ProductList
         },
         {
           path: "prices/create",
-          name: "Price",
+          name: "PriceCreate",
           component: PriceCreate
         },
         {
@@ -75,12 +75,12 @@ export default new Router({
         },
         {
           path: "contracts/create",
-          name: "Contract",
+          name: "ContractCreate",
           component: ContractCreate
         },
         {
           path: "contracts/list",
-          name: "Contract",
+          name: "ContractList",
           component: ContractList
         },
         {

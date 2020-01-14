@@ -13,7 +13,20 @@
           :columns="columns"
           url="/api/contracts"
           :options="options"
-        />
+        >
+          <router-link
+            :to="{
+              name: 'ContractCreate',
+              params: {
+                id: props.row.id
+              }
+            }"
+            slot="action"
+            slot-scope="props"
+          >
+            <b-button variant="success" class="fa fa-edit"></b-button>
+          </router-link>
+        </v-server-table>
       </b-col>
     </b-row>
   </b-container>
