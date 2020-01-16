@@ -5,6 +5,7 @@ require("./bootstrap");
 import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
 import { ServerTable, ClientTable, Event } from "vue-tables-2";
+import vSelect from "vue-select";
 // import * as VueGoogleMaps from "vue2-google-maps";
 import VueTouch from "vue-touch";
 // import Trend from "vuetrend";
@@ -29,7 +30,7 @@ Vue.use(VueTouch);
 // Vue.component("apexchart", VueApexCharts);
 
 Vue.config.productionTip = false;
-
+Vue.component("v-select", vSelect);
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

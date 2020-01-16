@@ -11,12 +11,19 @@
       <b-row>
         <b-col>
           <b-form-group label="Khách Hàng">
-            <b-form-input
+            <v-select
+              :options="options"
               v-model="form.customer_id"
-              type="text"
-              required
-              placeholder="Nhập khách hàng"
-            ></b-form-input>
+              @search="onSearch"
+              :filterable="false"
+              :reduce="customer => customer.code"
+            >
+              <template v-slot:no-options>
+                Nhap ten khach hang
+              </template>
+
+              <template v-slot:> </template>
+            </v-select>
           </b-form-group>
         </b-col>
       </b-row>
@@ -136,6 +143,7 @@
 import Vue from "vue";
 import Widget from "../../components/Widget/Widget";
 import Sparklines from "../../components/Sparklines/Sparklines";
+import _ from "lodash";
 
 export default {
   name: "Tables",
@@ -165,7 +173,8 @@ export default {
         date: null,
         supplier: null,
         note: null
-      }
+      },
+      options: []
     };
   },
   computed: {
@@ -197,6 +206,19 @@ export default {
         console.log(res.data.result);
       });
     },
+    onSearch(search, loading) {
+      loading(true);
+      this.search(loading, search, this);
+    },
+    search: _.debounce((loading, search, vm) => {
+      axios.get(`api/customers/search?q=${search}`).then(res => {
+        console.log(this);
+        vm.options = _.map(res.data.data, value => {
+          return { label: value.name, code: value.id };
+        });
+        loading(false);
+      });
+    }, 350),
     deleteRow(index) {
       this.form.details.splice(index, 1);
     }

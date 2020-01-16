@@ -51,11 +51,15 @@
         ]"
       />
       <NavLink
-        header="Tables Basic"
-        link="/app/tables"
-        iconName="flaticon-equal-1"
-        index="tables"
-        isHeader
+        :activeItem="activeItem"
+        header="Phiếu giao việc"
+        link="/assignments"
+        iconName="flaticon-list"
+        index="assignments"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/assignments/create' },
+          { header: 'Danh sách', link: '/assignments/list' }
+        ]"
       />
       <NavLink
         header="Notifications"

@@ -13,6 +13,9 @@ import ProductList from "./pages/Products/List";
 
 import PriceCreate from "./pages/Prices/Create";
 import PriceList from "./pages/Prices/List";
+
+import AssignmentCreate from "./pages/Assignments/Create";
+import AssignmentList from "./pages/Assignments/List";
 // Tables
 import TablesBasicPage from "./pages/Tables/Basic";
 
@@ -82,6 +85,16 @@ export default new Router({
           path: "contracts/list",
           name: "ContractList",
           component: ContractList
+        },
+        {
+          path: "assignments/create",
+          name: "AssignmentCreate",
+          component: AssignmentCreate
+        },
+        {
+          path: "assignments/list",
+          name: "AssignmentList",
+          component: AssignmentList
         },
         {
           path: "components/icons",

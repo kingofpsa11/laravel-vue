@@ -31,7 +31,11 @@ Route::group([
     });
 });
 
+Route::get('customers/search', 'CustomerController@getCustomer');
+Route::resource('customers', 'CustomerController');
+
 Route::resource('products', 'ProductController');
 Route::resource('categories', 'CategoryController');
 Route::resource('prices', 'PriceController');
 Route::resource('contracts', 'ContractController');
+Route::resource('assignments', 'AssignmentController');
