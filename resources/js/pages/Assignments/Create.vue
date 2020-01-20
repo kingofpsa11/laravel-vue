@@ -42,11 +42,12 @@
         </b-col>
         <b-col md="4">
           <b-form-group label="Ngày">
-            <b-form-input
+            <cleave
               v-model="form.date"
-              type="date"
-              required
-            ></b-form-input>
+              class="form-control"
+              :options="date"
+              placeholder="dd/mm/yyyy"
+            ></cleave>
           </b-form-group>
         </b-col>
       </b-row>
@@ -64,7 +65,7 @@
               </tr>
             </thead>
             <b-tbody>
-              <b-tr v-for="(row, index) in form.details" :key="row.id">
+              <b-tr v-for="(row, index) in form.details" :key="row.index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ row.code }}</td>
                 <td>
@@ -82,18 +83,15 @@
                   ></b-form-input>
                 </td>
                 <td>
-                  <b-form-input
+                  <input
+                    type="text"
+                    v-mask="{ alias: 'dd/mm/yyyy' }"
+                    class="form-control"
                     v-model="row.date"
-                    type="date"
-                    required
-                  ></b-form-input>
+                  />
                 </td>
                 <td>
-                  <b-form-input
-                    v-model="row.note"
-                    type="text"
-                    readonly
-                  ></b-form-input>
+                  <b-form-input v-model="row.note" type="text"></b-form-input>
                 </td>
                 <td>
                   <b-button
@@ -119,11 +117,18 @@
 <script>
 import Vue from "vue";
 import _ from "lodash";
+import moment from "moment";
+import Cleave from "vue-cleave-component";
 
 export default {
   name: "Tables",
   data() {
     return {
+      date: {
+        date: true,
+        datePattern: ["d", "m", "Y"],
+        delimiter: "/"
+      },
       form: {
         customer_id: "",
         number: "",
@@ -160,15 +165,9 @@ export default {
     }
   },
   methods: {
-    parseDate(date) {
-      const dateSet = date.toDateString().split(" ");
-      return `${date.toLocaleString("en-us", { month: "long" })} ${
-        dateSet[2]
-      }, ${dateSet[3]}`;
-    },
     addRow(e) {
       e.preventDefault();
-      this.form.details.push(this.newItem);
+      this.form.details.push({ ...this.newItem });
     },
     onSubmit(e) {
       e.preventDefault();
@@ -181,7 +180,7 @@ export default {
       this.search(loading, search, this);
     },
     search: _.debounce((loading, search, vm) => {
-      axios.get(`api/customers/search?q=${search}`).then(res => {
+      axios.get(`api/factories/search?q=${search}`).then(res => {
         console.log(this);
         vm.options = _.map(res.data.data, value => {
           return { label: value.name, code: value.id };

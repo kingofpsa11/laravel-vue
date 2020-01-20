@@ -6,6 +6,8 @@ import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
 import { ServerTable, ClientTable, Event } from "vue-tables-2";
 import vSelect from "vue-select";
+import Cleave from "vue-cleave-component";
+const VueInputMask = require("vue-inputmask").default;
 // import * as VueGoogleMaps from "vue2-google-maps";
 import VueTouch from "vue-touch";
 // import Trend from "vuetrend";
@@ -20,6 +22,8 @@ Vue.use(BootstrapVue);
 Vue.use(ClientTable, {}, false, "bootstrap4");
 Vue.use(ServerTable, {}, false, "bootstrap4");
 Vue.use(VueTouch);
+Vue.use(Cleave);
+Vue.use(VueInputMask);
 // Vue.use(Trend);
 // Vue.use(VueGoogleMaps, {
 //     load: {

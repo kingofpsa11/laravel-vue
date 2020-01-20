@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Factory;
 use Illuminate\Http\Request;
+use App\Http\Resources\FactoryCollection;
 
 class FactoryController extends Controller
 {
@@ -81,5 +82,14 @@ class FactoryController extends Controller
     public function destroy(Factory $factory)
     {
         //
+    }
+
+    public function getFactory(Request $request)
+    {
+        $term = $request->q;
+
+        $listFactory = Factory::where('name', 'LIKE', '%' . $term . '%')
+            ->get();
+        return new FactoryCollection($listFactory);
     }
 }

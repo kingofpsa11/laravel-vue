@@ -11,8 +11,7 @@ try {
   global.$ = global.jQuery = require("jquery");
   window.moment = moment = require("moment");
   window._ = require("lodash");
-  window.debounce = require("lodash/debounce");
-  // require('bootstrap');
+  require("bootstrap");
 } catch (e) {}
 
 /**
