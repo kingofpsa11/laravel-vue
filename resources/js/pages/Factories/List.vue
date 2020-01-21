@@ -51,21 +51,11 @@
         >
           <template v-slot:cell(action)="row">
             <b-button-group>
-              <b-button variant="primary" @click="row.toggleDetails"
-                >Xem</b-button
+              <router-link :to="`/factories/${row.id}`" class="btn btn-success"
+                >Xem</router-link
               >
               <b-button variant="warning">Sửa</b-button>
             </b-button-group>
-          </template>
-
-          <template v-slot:row-details="row">
-            <b-card>
-              <ul>
-                <li v-for="(value, key) in row.item" :key="key">
-                  {{ key }}: {{ value }}
-                </li>
-              </ul>
-            </b-card>
           </template>
         </b-table>
       </b-col>
@@ -79,7 +69,7 @@ import Vue from "vue";
 export default {
   name: "Tables",
   created() {
-    this.getContractList();
+    this.getFactoryList();
   },
   data() {
     return {
@@ -88,10 +78,7 @@ export default {
       perPage: 10,
       pageOptions: [10, 20],
       fields: [
-        { key: "category", label: "nhóm" },
-        { key: "code", label: "mã sản phẩm" },
-        { key: "name", label: "tên sản phẩm" },
-        { key: "status", label: "trạng thái" },
+        { key: "name", label: "tên phân xưởng" },
         { key: "action", label: "xem" }
       ],
       items: [],
@@ -100,15 +87,9 @@ export default {
     };
   },
   methods: {
-    parseDate(date) {
-      const dateSet = date.toDateString().split(" ");
-      return `${date.toLocaleString("en-us", { month: "long" })} ${
-        dateSet[2]
-      }, ${dateSet[3]}`;
-    },
-    getContractList() {
+    getFactoryList() {
       axios
-        .get("/api/products")
+        .get("/api/factories")
         .then(response => {
           this.items = response.data.data;
           this.totalRows = this.items.length;

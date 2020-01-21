@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\Http\Resources\AssignmentCollection;
 use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
@@ -14,7 +15,7 @@ class AssignmentController extends Controller
      */
     public function index()
     {
-        //
+        return new AssignmentCollection(Assignment::all());
     }
 
     /**

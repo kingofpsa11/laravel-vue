@@ -16,6 +16,9 @@ import PriceList from "./pages/Prices/List";
 
 import AssignmentCreate from "./pages/Assignments/Create";
 import AssignmentList from "./pages/Assignments/List";
+
+import FactoryCreate from "./pages/Factories/Create";
+import FactoryList from "./pages/Factories/List";
 // Tables
 import TablesBasicPage from "./pages/Tables/Basic";
 
@@ -85,6 +88,16 @@ export default new Router({
           path: "contracts/list",
           name: "ContractList",
           component: ContractList
+        },
+        {
+          path: "factories/create",
+          name: "FactoryCreate",
+          component: FactoryCreate
+        },
+        {
+          path: "factories/list",
+          name: "FactoryList",
+          component: FactoryList
         },
         {
           path: "assignments/create",

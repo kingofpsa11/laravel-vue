@@ -52,6 +52,17 @@
       />
       <NavLink
         :activeItem="activeItem"
+        header="Phân xưởng"
+        link="/factories"
+        iconName="flaticon-list"
+        index="factories"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/factories/create' },
+          { header: 'Danh sách', link: '/factories/list' }
+        ]"
+      />
+      <NavLink
+        :activeItem="activeItem"
         header="Phiếu giao việc"
         link="/assignments"
         iconName="flaticon-list"

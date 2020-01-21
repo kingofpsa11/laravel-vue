@@ -15,17 +15,7 @@ class FactoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new FactoryCollection(Factory::all());
     }
 
     /**
@@ -36,7 +26,9 @@ class FactoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $factory = Factory::create($request->all());
+
+        return response(['factory' => $factory], 201);
     }
 
     /**
