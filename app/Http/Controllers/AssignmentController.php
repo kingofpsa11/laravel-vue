@@ -36,7 +36,6 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**

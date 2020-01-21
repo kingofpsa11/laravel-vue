@@ -7,7 +7,7 @@
     <h2 class="page-title">
       Phiếu giao việc - <span class="fw-semi-bold">Tạo mới</span>
     </h2>
-    <b-form @submit="onSubmit">
+    <b-form @submit.prevent="onSubmit">
       <b-row>
         <b-col>
           <b-form-group label="Đơn vị">
@@ -16,7 +16,7 @@
               v-model="form.factory_id"
               @search="onSearch"
               :filterable="false"
-              :reduce="factory => factory.code"
+              :reduce="factory => factory.id"
             >
               <template v-slot:no-options>
                 Nhập tên đơn vị
@@ -42,12 +42,12 @@
         </b-col>
         <b-col md="4">
           <b-form-group label="Ngày">
-            <cleave
-              v-model="form.date"
+            <input
+              type="text"
+              v-mask="{ alias: 'dd/mm/yyyy' }"
               class="form-control"
-              :options="date"
-              placeholder="dd/mm/yyyy"
-            ></cleave>
+              v-model="form.date"
+            />
           </b-form-group>
         </b-col>
       </b-row>
@@ -87,7 +87,7 @@
                     type="text"
                     v-mask="{ alias: 'dd/mm/yyyy' }"
                     class="form-control"
-                    v-model="row.date"
+                    v-model="row.deadline"
                   />
                 </td>
                 <td>
@@ -118,26 +118,23 @@
 import Vue from "vue";
 import _ from "lodash";
 import moment from "moment";
-import Cleave from "vue-cleave-component";
 
 export default {
-  name: "Tables",
+  created() {
+    this.getFactoryList(this);
+  },
   data() {
     return {
-      date: {
-        date: true,
-        datePattern: ["d", "m", "Y"],
-        delimiter: "/"
-      },
       form: {
-        customer_id: "",
+        factory_id: "",
         number: "",
+        date: "",
         details: [
           {
             code: "",
             product_id: "",
             quantity: null,
-            date: null,
+            deadline: null,
             note: ""
           }
         ]
@@ -158,9 +155,11 @@ export default {
     },
     totalValue() {
       let totalValue = 0;
+
       this.form.details.forEach(item => {
         totalValue += item.price * item.quantity;
       });
+
       return totalValue;
     }
   },
@@ -169,8 +168,7 @@ export default {
       e.preventDefault();
       this.form.details.push({ ...this.newItem });
     },
-    onSubmit(e) {
-      e.preventDefault();
+    onSubmit() {
       axios.post("/api/assignments", this.form).then(res => {
         console.log(res.data.result);
       });
@@ -181,7 +179,6 @@ export default {
     },
     search: _.debounce((loading, search, vm) => {
       axios.get(`api/factories/search?q=${search}`).then(res => {
-        console.log(this);
         vm.options = _.map(res.data.data, value => {
           return { label: value.name, code: value.id };
         });
@@ -190,6 +187,13 @@ export default {
     }, 350),
     deleteRow(index) {
       this.form.details.splice(index, 1);
+    },
+    getFactoryList(vm) {
+      axios.get("api/factories").then(res => {
+        vm.options = _.map(res.data.data, value => {
+          return { label: value.name, code: value.id };
+        });
+      });
     }
   }
 };

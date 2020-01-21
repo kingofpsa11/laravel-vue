@@ -40,11 +40,12 @@
         </b-col>
         <b-col md="4">
           <b-form-group label="Ngày đặt hàng">
-            <b-form-input
+            <input
+              type="text"
+              class="form-control"
+              v-mask="{ alias: 'dd/mm/yyyy' }"
               v-model="form.date"
-              type="date"
-              required
-            ></b-form-input>
+            />
           </b-form-group>
         </b-col>
         <b-col md="4">
@@ -98,18 +99,15 @@
                   ></b-form-input>
                 </td>
                 <td>
-                  <b-form-input
-                    v-model="row.date"
-                    type="date"
-                    required
-                  ></b-form-input>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-mask="{ alias: 'dd/mm/yyyy' }"
+                    v-model="row.deadline"
+                  />
                 </td>
                 <td class="width-150">
-                  <b-form-input
-                    v-model="row.supplier"
-                    type="text"
-                    readonly
-                  ></b-form-input>
+                  <b-form-select v-model="row.supplier_id"></b-form-select>
                 </td>
                 <td>
                   <b-form-input
@@ -166,13 +164,13 @@ export default {
         ]
       },
       newItem: {
-        code: null,
-        product: null,
+        code: "",
+        price_id: "",
         quantity: null,
         price: null,
         date: null,
-        supplier: null,
-        note: null
+        supplier: "",
+        note: ""
       },
       options: []
     };
@@ -198,7 +196,7 @@ export default {
     },
     addRow(e) {
       e.preventDefault();
-      this.form.details.push(this.newItem);
+      this.form.details.push({ ...this.newItem });
     },
     onSubmit(e) {
       e.preventDefault();

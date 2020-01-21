@@ -51,10 +51,16 @@
         >
           <template v-slot:cell(action)="row">
             <b-button-group>
-              <router-link :to="`/factories/${row.id}`" class="btn btn-success"
+              <router-link
+                :to="`/factories/${row.item.id}`"
+                class="btn btn-success"
                 >Xem</router-link
               >
-              <b-button variant="warning">Sửa</b-button>
+              <router-link
+                :to="`/factories/${row.item.id}/edit`"
+                class="btn btn-warning"
+                >Sửa</router-link
+              >
             </b-button-group>
           </template>
         </b-table>
