@@ -90,6 +90,16 @@ export default new Router({
           component: ContractList
         },
         {
+          path: "contracts/:id",
+          name: "ContractRead",
+          component: ContractCreate
+        },
+        {
+          path: "contracts/:id/edit",
+          name: "ContractEdit",
+          component: ContractCreate
+        },
+        {
           path: "factories/create",
           name: "FactoryCreate",
           component: FactoryCreate

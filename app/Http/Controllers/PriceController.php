@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Price;
+use App\ProfitRate;
 use App\Http\Resources\PriceCollection;
 use App\Http\Resources\PriceResource;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PriceController extends Controller
@@ -84,5 +86,32 @@ class PriceController extends Controller
     public function destroy(Price $price)
     {
         //
+    }
+
+    public function getPrice(Request $request)
+    {
+        $term = $request->q;
+        $customer = $request->customer_id;
+        $profitRate = ProfitRate::where('customer_id', $customer)->first();
+
+        if ($profitRate) {
+            $result = DB::table('prices')
+                ->join('products', 'prices.product_id', '=', 'products.id')
+                ->leftJoin('profit_rates', 'profit_rates.category_id', '=', 'products.category_id')
+                ->select('prices.id', 'products.name', 'products.code', DB::raw('ROUND(prices.selling_price * profit_rates.rate, -3) as sell_price'))
+                ->where('profit_rates.customer_id', '=', $customer)
+                ->where('products.name', 'LIKE', '%' . $term . '%')
+                ->take(20)
+                ->get();
+        } else {
+            $result = DB::table('prices')
+                ->join('products', 'prices.product_id', '=', 'products.id')
+                ->select('prices.id', 'products.name', 'products.code', DB::raw('prices.selling_price as sell_price'))
+                ->where('products.name', 'LIKE', '%' . $term . '%')
+                ->take(20)
+                ->get();
+        }
+
+        return response()->json($result, 200);
     }
 }

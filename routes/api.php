@@ -36,6 +36,8 @@ Route::resource('customers', 'CustomerController');
 
 Route::resource('products', 'ProductController');
 Route::resource('categories', 'CategoryController');
+
+Route::get('prices/search', 'PriceController@getPrice');
 Route::resource('prices', 'PriceController');
 Route::resource('contracts', 'ContractController');
 

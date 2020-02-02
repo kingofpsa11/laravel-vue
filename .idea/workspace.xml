@@ -3,13 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="616fb0b4-cf39-4c07-b76f-90728d619ebd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Factory.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Factory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Contract.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Contract.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PriceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PriceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/Routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/Sidebar/Sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Sidebar/Sidebar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/Factories/Create.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Factories/Create.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/Contracts/Create.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Contracts/Create.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/Contracts/Create.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Contracts/Create.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/Contracts/List.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Contracts/List.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +149,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../donhang" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -187,7 +189,9 @@
       <workItem from="1578586930881" duration="169000" />
       <workItem from="1578885661171" duration="3894000" />
       <workItem from="1579009899913" duration="53000" />
-      <workItem from="1579400443025" duration="2515000" />
+      <workItem from="1579400443025" duration="4312000" />
+      <workItem from="1579935201575" duration="98000" />
+      <workItem from="1579936147978" duration="34000" />
     </task>
     <servers />
   </component>
@@ -198,17 +202,21 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1061" y="456" key="FileChooserDialogImpl" timestamp="1579936180759">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1061" y="456" key="FileChooserDialogImpl/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579936180759" />
     <state x="782" y="344" key="SettingsEditor" timestamp="1579531031216">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="782" y="344" key="SettingsEditor/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579531031216" />
-    <state x="976" y="525" key="com.intellij.ide.util.TipDialog" timestamp="1579009940585">
+    <state x="976" y="525" key="com.intellij.ide.util.TipDialog" timestamp="1579936148117">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="976" y="525" key="com.intellij.ide.util.TipDialog/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579009940585" />
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1579532189273">
+    <state x="976" y="525" key="com.intellij.ide.util.TipDialog/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579936148117" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1579610151961">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579532189273" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579610151961" />
   </component>
 </project>

@@ -14,18 +14,20 @@
           url="/api/contracts"
           :options="options"
         >
-          <router-link
-            :to="{
-              name: 'ContractCreate',
-              params: {
-                id: props.row.id
-              }
-            }"
-            slot="action"
-            slot-scope="props"
-          >
-            <b-button variant="success" class="fa fa-edit"></b-button>
-          </router-link>
+          <template v-slot:action="props">
+            <b-button-group>
+              <router-link
+                :to="`/contracts/${props.row.id}`"
+                class="btn btn-info"
+                >Xem</router-link
+              >
+              <router-link
+                :to="`/contracts/${props.row.id}/edit`"
+                class="btn btn-warning"
+                >Sửa</router-link
+              >
+            </b-button-group>
+          </template>
         </v-server-table>
       </b-col>
     </b-row>
@@ -36,7 +38,6 @@
 import Vue from "vue";
 
 export default {
-  name: "Tables",
   data() {
     return {
       columns: [
@@ -65,9 +66,9 @@ export default {
         },
         filterByColumn: true,
         templates: {
-          date(h, row) {
-            return moment(row.date).format("DD-MM-YYYY");
-          }
+          // date(h, row) {
+          //   return moment(row.date).format("DD-MM-YYYY");
+          // }
         }
       },
       perPage: 25

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contract;
 use App\ContractDetail;
+use App\Http\Resources\ContractResource;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
@@ -114,9 +115,12 @@ class ContractController extends Controller
      * @param  \App\Contract  $contract
      * @return \Illuminate\Http\Response
      */
-    public function show(Contract $contract)
+    public function show($id)
     {
-        //
+        $contract = Contract::find($id);
+        $contract->load('contractDetails.price.product', 'contractDetails.supplier');
+
+        return new ContractResource($contract);
     }
 
     /**
