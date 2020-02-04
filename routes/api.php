@@ -44,4 +44,3 @@ Route::resource('contracts', 'ContractController');
 Route::get('factories/search', 'FactoryController@getFactory');
 Route::resource('factories', 'FactoryController');
 Route::resource('assignments', 'AssignmentController');
-

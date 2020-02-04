@@ -81,15 +81,15 @@ class ContractController extends Controller
         });
     }
 
-  protected function filter($data, $query, $fields)
-  {
-    return $data->where(function ($q) use ($query, $fields) {
-      foreach ($fields as $index => $field) {
-        $method = $index ? 'orWhere' : 'where';
-        $q->{$method}($field, 'LIKE', "%{$query}%");
-      }
-    });
-  }
+    protected function filter($data, $query, $fields)
+    {
+        return $data->where(function ($q) use ($query, $fields) {
+            foreach ($fields as $index => $field) {
+                $method = $index ? 'orWhere' : 'where';
+                $q->{$method}($field, 'LIKE', "%{$query}%");
+            }
+        });
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -118,7 +118,7 @@ class ContractController extends Controller
     public function show($id)
     {
         $contract = Contract::find($id);
-        $contract->load('contractDetails.price.product', 'contractDetails.supplier');
+        $contract->load('contractDetails.price.product', 'contractDetails.supplier', 'customer');
 
         return new ContractResource($contract);
     }
@@ -131,7 +131,6 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
-        
     }
 
     /**

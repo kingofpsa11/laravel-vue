@@ -5,6 +5,7 @@ import Layout from "./components/Layout/Layout";
 import Login from "./pages/Login/Login";
 import ErrorPage from "./pages/Error/Error";
 // Core
+import ContractView from "./pages/Contracts/View";
 import ContractCreate from "./pages/Contracts/Create";
 import ContractList from "./pages/Contracts/List";
 
@@ -91,8 +92,8 @@ export default new Router({
         },
         {
           path: "contracts/:id",
-          name: "ContractRead",
-          component: ContractCreate
+          name: "ContractView",
+          component: ContractView
         },
         {
           path: "contracts/:id/edit",

@@ -14,13 +14,13 @@
             <v-select
               :options="customerList"
               :selectOnTab="true"
-              v-model="form.customer_id"
+              v-model="contract.customer_id"
               @search="onSearchCustomer"
               :filterable="false"
               :reduce="customer => customer.code"
             >
               <template v-slot:no-options>
-                Nhap ten khach hang
+                Nhập tên khách hàng
               </template>
               <template v-slot:option="option">
                 {{ option.label }}
@@ -36,7 +36,7 @@
         <b-col md="4">
           <b-form-group label="Số đơn hàng">
             <b-form-input
-              v-model="form.number"
+              v-model="contract.number"
               type="number"
               required
               placeholder="Nhập số đơn hàng"
@@ -49,17 +49,19 @@
               type="text"
               class="form-control"
               v-mask="{ alias: 'dd/mm/yyyy' }"
-              v-model="form.date"
+              v-model="contract.date"
             />
           </b-form-group>
         </b-col>
         <b-col md="4">
           <b-form-group label="Giá trị đơn hàng">
-            <b-form-input
-              :value="totalValue"
+            <input
               type="text"
+              :value="totalValue"
+              v-mask="currencyFormat"
+              class="form-control"
               readonly
-            ></b-form-input>
+            />
           </b-form-group>
         </b-col>
       </b-row>
@@ -80,7 +82,10 @@
             </b-thead>
 
             <b-tbody>
-              <b-tr v-for="(row, index) in form.contract_details" :key="row.id">
+              <b-tr
+                v-for="(row, index) in contract.contract_details"
+                :key="row.id"
+              >
                 <td>{{ index + 1 }}</td>
                 <td>{{ row.code }}</td>
                 <td>
@@ -138,12 +143,8 @@
                 <td>
                   <b-form-input v-model="row.note" type="text"></b-form-input>
                 </td>
-                <td>
-                  <b-button
-                    variant="success"
-                    @click="deleteRow(index)"
-                    v-if="count !== 1"
-                  >
+                <td v-if="count !== 1">
+                  <b-button variant="success" @click="deleteRow(index)">
                     <i class="fa fa-minus"></i>
                   </b-button>
                 </td>
@@ -168,7 +169,7 @@ import _ from "lodash";
 export default {
   data() {
     return {
-      form: {
+      contract: {
         customer_id: "",
         number: "",
         contract_details: [
@@ -199,7 +200,14 @@ export default {
         { value: 74, text: "Litec" },
         { value: 584, text: "Tấn Phát" },
         { value: 994, text: "Nhà máy" }
-      ]
+      ],
+      currencyFormat: {
+        alias: "integer",
+        groupSeparator: ".",
+        autoGroup: true,
+        removeMaskOnSubmit: true,
+        unmaskAsNumber: true
+      }
     };
   },
   created() {
@@ -207,11 +215,11 @@ export default {
   },
   computed: {
     count() {
-      return this.form.contract_details.length;
+      return this.contract.contract_details.length;
     },
     totalValue() {
       let totalValue = 0;
-      this.form.contract_details.forEach(item => {
+      this.contract.contract_details.forEach(item => {
         totalValue += item.selling_price * item.quantity;
       });
       return totalValue;
@@ -224,7 +232,7 @@ export default {
       });
     },
     addRow() {
-      this.form.contract_details.push({ ...this.newItem });
+      this.contract.contract_details.push({ ...this.newItem });
     },
     onSubmit() {
       axios.post("/api/contracts", this.form).then(res => {
@@ -249,7 +257,9 @@ export default {
     },
     searchPrice: _.debounce((loading, search, vm) => {
       axios
-        .get(`api/prices/search?q=${search}&customer_id=${vm.form.customer_id}`)
+        .get(
+          `api/prices/search?q=${search}&customer_id=${vm.contract.customer_id}`
+        )
         .then(res => {
           vm.priceList = _.map(res.data, value => {
             return {
@@ -267,7 +277,7 @@ export default {
       row.name = price.label;
     },
     deleteRow(index) {
-      this.form.contract_details.splice(index, 1);
+      this.contract.contract_details.splice(index, 1);
     }
   }
 };
