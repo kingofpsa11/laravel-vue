@@ -10,7 +10,7 @@
         @swipe="handleSwipe"
         :swipe-options="{ direction: 'horizontal' }"
       >
-        <router-view />
+        <router-view :key="$route.path" />
         <footer class="contentFooter">
           Sing Vue Version - Made by
           <a

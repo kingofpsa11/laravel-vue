@@ -96,6 +96,8 @@
           <router-link :to="`/contracts/${id}/edit`" class="btn btn-warning"
             >Sửa</router-link
           >
+          <b-button variant="primary" @click="onSigned">Ký Nháy</b-button>
+          <b-button variant="success" @click="onApproved">Duyệt</b-button>
         </b-col>
       </b-row>
     </b-form>
@@ -127,6 +129,24 @@ export default {
       axios.get(`api/contracts/${id}`).then(res => {
         this.contract = res.data.data;
       });
+    },
+    onSigned() {
+      axios
+        .put(`api/contracts/${this.$route.params.id}`, { signed: true })
+        .then(res => {
+          if (res.data.data === "success") {
+            this.$router.push("/");
+          }
+        });
+    },
+    onApproved() {
+      axios
+        .put(`api/contracts/${this.$route.params.id}`, { approved: true })
+        .then(res => {
+          if (res.data.data === "success") {
+            this.$router.push("/");
+          }
+        });
     }
   }
 };

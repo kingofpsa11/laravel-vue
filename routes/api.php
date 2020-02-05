@@ -40,6 +40,7 @@ Route::resource('categories', 'CategoryController');
 Route::get('prices/search', 'PriceController@getPrice');
 Route::resource('prices', 'PriceController');
 Route::resource('contracts', 'ContractController');
+Route::resource('manufacturer-orders', 'ManufacturerOrderController');
 
 Route::get('factories/search', 'FactoryController@getFactory');
 Route::resource('factories', 'FactoryController');

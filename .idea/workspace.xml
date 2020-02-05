@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="616fb0b4-cf39-4c07-b76f-90728d619ebd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Resources/ContractDetailCollection.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Resources/ContractDetailResource.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/pages/Contracts/View.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContractController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContractController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/ContractResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/ContractResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PriceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PriceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Layout/Layout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Layout/Layout.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/pages/Contracts/Create.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Contracts/Create.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -192,6 +187,7 @@
       <workItem from="1579935201575" duration="98000" />
       <workItem from="1579936147978" duration="34000" />
       <workItem from="1580808205503" duration="650000" />
+      <workItem from="1580875094366" duration="64000" />
     </task>
     <servers />
   </component>
@@ -202,11 +198,11 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2716" y="339" key="FileChooserDialogImpl" timestamp="1580808260556">
+    <state x="2716" y="339" key="FileChooserDialogImpl" timestamp="1580875156990">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="1061" y="456" key="FileChooserDialogImpl/-2560.716.2560.1380/0.0.2560.1400/3840.1080.1920.1040@0.0.2560.1400" timestamp="1579936180759" />
-    <state x="2716" y="339" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1580808260556" />
+    <state x="2716" y="339" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1580875156990" />
     <state x="782" y="344" key="SettingsEditor" timestamp="1579531031216">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

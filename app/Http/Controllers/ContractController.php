@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contract;
 use App\ContractDetail;
+use App\ManufacturerOrder;
+use App\ManufacturerOrderDetail;
 use App\Http\Resources\ContractResource;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,7 +50,7 @@ class ContractController extends Controller
 
         foreach ($result as $value) {
             $results[] = [
-                'id' => $value->id,
+                'id' => $value->contract_id,
                 'customer_id' => $value->contract->customer_id,
                 'number' => $value->contract->number,
                 'price_id' => $value->price_id,
@@ -106,7 +108,7 @@ class ContractController extends Controller
             $this->contract->contractDetails()->create($detail);
         }
 
-        return response()->json('success');
+        return response('success', 201);
     }
 
     /**
@@ -142,7 +144,47 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
-        //
+        if ($request->signed === true) {
+            $contract->update(['status' => 9]);
+        } elseif ($request->approved === true) {
+            foreach ($contract->contractDetails as $contractDetail) {
+                $manufacturerOrder = ManufacturerOrder::firstOrCreate(
+                    [
+                        'contract_id' => $contract->id,
+                        'supplier_id' => $contractDetail->supplier_id,
+                    ],
+                    [
+                        'number' => ManufacturerOrder::getNewNumber($contractDetail->supplier_id),
+                        'date' => $contract->date,
+                    ]
+                );
+
+                ManufacturerOrderDetail::updateOrCreate(
+                    [
+                        'contract_detail_id' => $contractDetail->id,
+                    ],
+                    [
+                        'manufacturer_order_id' => $manufacturerOrder->id,
+                    ]
+                );
+            }
+            $contract->update(['status' => 8]);
+        } else {
+            $contract->update($request->all());
+            $contract->update(['status' => 10]);
+            $contract->contractDetails()->update(['status' => 9]);
+
+            foreach ($request->details as $detail) {
+                $id = $detail['id'];
+                unset($detail['id']);
+                $detail['status'] = 10;
+                $contract->contractDetails()->updateOrCreate(['id' => $id], $detail);
+            }
+
+            $contract->contractDetails()->where('status', 9)->delete();
+        }
+
+        return response('success', 200);
     }
 
     /**

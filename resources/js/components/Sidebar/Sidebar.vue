@@ -51,6 +51,13 @@
         ]"
       />
       <NavLink
+        header="Lệnh sản xuất"
+        link="/manufacturer-orders/list"
+        iconName="flaticon-home"
+        index="manufacturer-orders"
+        isHeader
+      />
+      <NavLink
         :activeItem="activeItem"
         header="Phân xưởng"
         link="/factories"

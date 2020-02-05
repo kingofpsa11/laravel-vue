@@ -14,19 +14,13 @@
             <v-select
               :options="customerList"
               :selectOnTab="true"
-              v-model="contract.customer_id"
+              :value="contract.customer_name"
+              @input="customer => updateCustomer(customer)"
               @search="onSearchCustomer"
               :filterable="false"
-              :reduce="customer => customer.code"
             >
               <template v-slot:no-options>
                 Nhập tên khách hàng
-              </template>
-              <template v-slot:option="option">
-                {{ option.label }}
-              </template>
-              <template v-slot:selected-option="option">
-                {{ option.label }}
               </template>
             </v-select>
           </b-form-group>
@@ -70,14 +64,14 @@
           <table class="table table-bordered">
             <b-thead>
               <b-tr>
-                <th class="hidden-sm-down">STT</th>
+                <th>STT</th>
                 <th>Mã SP</th>
                 <th>Tên sản phẩm</th>
-                <th class="hidden-sm-down">Số lượng</th>
-                <th class="hidden-sm-down">Đơn giá</th>
-                <th class="hidden-sm-down">Tiến độ</th>
-                <th class="hidden-sm-down">ĐVSX</th>
-                <th class="hidden-sm-down">Ghi chú</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Tiến độ</th>
+                <th>ĐVSX</th>
+                <th>Ghi chú</th>
               </b-tr>
             </b-thead>
 
@@ -87,7 +81,7 @@
                 :key="row.id"
               >
                 <td>{{ index + 1 }}</td>
-                <td>{{ row.code }}</td>
+                <td>{{ row.product_code }}</td>
                 <td>
                   <v-select
                     :options="priceList"
@@ -95,7 +89,7 @@
                     :filterable="false"
                     @input="price => updatePrice(row, price)"
                     name="price_id"
-                    label="row.name"
+                    :value="row.product_name"
                   >
                     <template #search="{attributes, events}">
                       <input
@@ -118,11 +112,13 @@
                   ></b-form-input>
                 </td>
                 <td>
-                  <b-form-input
-                    v-model="row.selling_price"
+                  <input
                     type="text"
+                    class="form-control"
+                    :value="row.selling_price"
+                    v-mask="currencyFormat"
                     readonly
-                  ></b-form-input>
+                  />
                 </td>
                 <td>
                   <input
@@ -174,8 +170,8 @@ export default {
         number: "",
         contract_details: [
           {
-            code: "",
-            name: "",
+            product_code: "",
+            product_name: "",
             price_id: "",
             quantity: null,
             selling_price: null,
@@ -211,7 +207,9 @@ export default {
     };
   },
   created() {
-    if (this.$route.params.id) this.getContracts(this.$route.params.id);
+    if (this.$route.params.id) {
+      this.getContracts(this.$route.params.id);
+    }
   },
   computed: {
     count() {
@@ -228,7 +226,7 @@ export default {
   methods: {
     getContracts(id) {
       axios.get(`api/contracts/${id}`).then(res => {
-        this.form = res.data.data;
+        this.contract = res.data.data;
       });
     },
     addRow() {
@@ -244,7 +242,7 @@ export default {
       this.searchCustomer(loading, search, this);
     },
     searchCustomer: _.debounce((loading, search, vm) => {
-      axios.get(`api/customers/search?q=${search}`).then(res => {
+      axios.get(`api/customers/search?q=${encodeURI(search)}`).then(res => {
         vm.customerList = _.map(res.data.data, value => {
           return { label: value.name, code: value.id };
         });
@@ -258,23 +256,31 @@ export default {
     searchPrice: _.debounce((loading, search, vm) => {
       axios
         .get(
-          `api/prices/search?q=${search}&customer_id=${vm.contract.customer_id}`
+          `api/prices/search?q=${encodeURI(search)}&customer_id=${
+            vm.contract.customer_id
+          }`
         )
         .then(res => {
           vm.priceList = _.map(res.data, value => {
             return {
               label: value.name,
               id: value.id,
-              price: value.sell_price
+              price: value.sell_price,
+              code: value.code
             };
           });
           loading(false);
         });
     }, 350),
+    updateCustomer(customer) {
+      this.contract.customer_name = customer.label;
+      this.contract.customer_id = customer.code;
+    },
     updatePrice(row, price) {
       row.price_id = price.id;
       row.selling_price = price.price;
-      row.name = price.label;
+      row.product_name = price.label;
+      row.product_code = price.code;
     },
     deleteRow(index) {
       this.contract.contract_details.splice(index, 1);

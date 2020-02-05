@@ -9,6 +9,9 @@ import ContractView from "./pages/Contracts/View";
 import ContractCreate from "./pages/Contracts/Create";
 import ContractList from "./pages/Contracts/List";
 
+import ManufacturerOrderView from "./pages/ManufacturerOrder/View";
+import ManufacturerOrderList from "./pages/ManufacturerOrder/List";
+
 import ProductCreate from "./pages/Products/Create";
 import ProductList from "./pages/Products/List";
 
@@ -94,6 +97,16 @@ export default new Router({
           path: "contracts/:id",
           name: "ContractView",
           component: ContractView
+        },
+        {
+          path: "manufacturer-orders/list",
+          name: "ManufacturerOrderList",
+          component: ManufacturerOrderList
+        },
+        {
+          path: "manufacturer-orders/:id",
+          name: "ManufacturerOrderView",
+          component: ManufacturerOrderView
         },
         {
           path: "contracts/:id/edit",
