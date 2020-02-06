@@ -5,6 +5,10 @@ import Layout from "./components/Layout/Layout";
 import Login from "./pages/Login/Login";
 import ErrorPage from "./pages/Error/Error";
 // Core
+import BomView from "./pages/Boms/View";
+import BomCreate from "./pages/Boms/Create";
+import BomList from "./pages/Boms/List";
+
 import ContractView from "./pages/Contracts/View";
 import ContractCreate from "./pages/Contracts/Create";
 import ContractList from "./pages/Contracts/List";
@@ -84,6 +88,26 @@ export default new Router({
           component: PriceList
         },
         {
+          path: "boms/create",
+          name: "BomCreate",
+          component: BomCreate
+        },
+        {
+          path: "boms/list",
+          name: "BomList",
+          component: BomList
+        },
+        {
+          path: "boms/:id",
+          name: "BomView",
+          component: BomView
+        },
+        {
+          path: "boms/:id/edit",
+          name: "BomEdit",
+          component: BomCreate
+        },
+        {
           path: "contracts/create",
           name: "ContractCreate",
           component: ContractCreate
@@ -99,6 +123,11 @@ export default new Router({
           component: ContractView
         },
         {
+          path: "contracts/:id/edit",
+          name: "ContractEdit",
+          component: ContractCreate
+        },
+        {
           path: "manufacturer-orders/list",
           name: "ManufacturerOrderList",
           component: ManufacturerOrderList
@@ -107,11 +136,6 @@ export default new Router({
           path: "manufacturer-orders/:id",
           name: "ManufacturerOrderView",
           component: ManufacturerOrderView
-        },
-        {
-          path: "contracts/:id/edit",
-          name: "ContractEdit",
-          component: ContractCreate
         },
         {
           path: "factories/create",

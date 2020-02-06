@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return new ProductCollection(Product::orderBy('id','desc')->take(20)->get());
+        return new ProductCollection(Product::orderBy('id', 'desc')->take(20)->get());
     }
 
     /**
@@ -83,5 +83,18 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function getProduct(Request $request)
+    {
+        $term = $request->q;
+
+        $products = Product::where('name', 'LIKE', '%' . $term . '%')
+            ->select('id', 'name', 'code')
+            ->orderBy('id', 'desc')
+            ->take(20)
+            ->get();
+
+        return response()->json($products, 200);
     }
 }

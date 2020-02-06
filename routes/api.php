@@ -34,11 +34,13 @@ Route::group([
 Route::get('customers/search', 'CustomerController@getCustomer');
 Route::resource('customers', 'CustomerController');
 
+Route::get('products/search', 'ProductController@getProduct');
 Route::resource('products', 'ProductController');
 Route::resource('categories', 'CategoryController');
 
 Route::get('prices/search', 'PriceController@getPrice');
 Route::resource('prices', 'PriceController');
+Route::resource('boms', 'BomController');
 Route::resource('contracts', 'ContractController');
 Route::resource('manufacturer-orders', 'ManufacturerOrderController');
 

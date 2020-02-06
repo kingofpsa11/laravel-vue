@@ -19,6 +19,17 @@
       />
       <NavLink
         :activeItem="activeItem"
+        header="Định mức"
+        link="/boms"
+        iconName="flaticon-list"
+        index="boms"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/boms/create' },
+          { header: 'Danh sách', link: '/boms/list' }
+        ]"
+      />
+      <NavLink
+        :activeItem="activeItem"
         header="Sản phẩm"
         link="/products"
         iconName="flaticon-list"
