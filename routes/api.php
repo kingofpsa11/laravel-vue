@@ -42,6 +42,7 @@ Route::get('prices/search', 'PriceController@getPrice');
 Route::resource('prices', 'PriceController');
 Route::resource('boms', 'BomController');
 Route::resource('contracts', 'ContractController');
+Route::get('manufacturer-orders/search', 'ManufacturerOrderController@getManufacturerByStatus');
 Route::resource('manufacturer-orders', 'ManufacturerOrderController');
 
 Route::get('factories/search', 'FactoryController@getFactory');

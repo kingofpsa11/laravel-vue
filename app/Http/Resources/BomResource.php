@@ -17,6 +17,7 @@ class BomResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'product_code' => $this->product->code,
             'product_name' => $this->product->name,
             'status' => $this->status,

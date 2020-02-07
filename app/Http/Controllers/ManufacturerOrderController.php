@@ -185,7 +185,7 @@ class ManufacturerOrderController extends Controller
 
     public function getManufacturerByStatus(Request $request)
     {
-        $search = $request->search;
+        $search = $request->q;
 
         $query = DB::table('manufacturer_note_details AS mnd')
             ->groupBy('mnd.contract_detail_id')
@@ -193,7 +193,7 @@ class ManufacturerOrderController extends Controller
 
         $result = DB::table('manufacturer_orders AS m')
             ->where('m.number', 'LIKE', '%' . $search . '%')
-            //            ->where('md.status', 10)
+            ->where('md.status', 10)
             ->orderBy('m.id', 'desc')
             ->join('manufacturer_order_details AS md', 'm.id', 'md.manufacturer_order_id')
             ->join('contract_details AS c', 'c.id', 'md.contract_detail_id')
@@ -213,7 +213,7 @@ class ManufacturerOrderController extends Controller
             ->having('quantity', '>', 0)
             ->get();
 
-        return response()->json($result);
+        return response()->json($result, 200);
     }
 
     public function getAllManufacturers(Request $request)

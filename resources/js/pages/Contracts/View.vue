@@ -110,8 +110,10 @@ import _ from "lodash";
 
 export default {
   created() {
-    if (this.$route.params.id) this.getContracts(this.$route.params.id);
-    this.id = this.$route.params.id;
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id;
+      this.getContracts(this.id);
+    }
   },
   data() {
     return {
@@ -131,22 +133,18 @@ export default {
       });
     },
     onSigned() {
-      axios
-        .put(`api/contracts/${this.$route.params.id}`, { signed: true })
-        .then(res => {
-          if (res.data.data === "success") {
-            this.$router.push("/");
-          }
-        });
+      axios.put(`api/contracts/${this.id}`, { signed: true }).then(res => {
+        if (res.data.data === "success") {
+          this.$router.push("/");
+        }
+      });
     },
     onApproved() {
-      axios
-        .put(`api/contracts/${this.$route.params.id}`, { approved: true })
-        .then(res => {
-          if (res.data.data === "success") {
-            this.$router.push("/");
-          }
-        });
+      axios.put(`api/contracts/${this.id}`, { approved: true }).then(res => {
+        if (res.data.data === "success") {
+          this.$router.push("/");
+        }
+      });
     }
   }
 };
