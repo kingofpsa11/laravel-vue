@@ -89,6 +89,21 @@
                     <template v-slot:no-options>
                       Chọn sản phẩm
                     </template>
+                    <template v-slot:option="option">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-md-2">
+                            {{ option.number }}
+                          </div>
+                          <div class="col-md-8" style="white-space:normal;">
+                            {{ option.label }}
+                          </div>
+                          <div class="col-md-2">
+                            {{ option.quantity }}
+                          </div>
+                        </div>
+                      </div>
+                    </template>
                   </v-select>
                 </td>
                 <td>
@@ -173,7 +188,8 @@ export default {
         deadline: null,
         note: ""
       },
-      factoryList: []
+      factoryList: [],
+      productList: []
     };
   },
   computed: {
@@ -224,8 +240,9 @@ export default {
             return {
               label: value.name,
               id: value.id,
-              price: value.sell_price,
-              code: value.code
+              code: value.code,
+              quantity: value.quantity,
+              number: value.number
             };
           });
           loading(false);
