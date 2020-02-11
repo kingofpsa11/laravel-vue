@@ -68,7 +68,7 @@
               >
                 <td>{{ index + 1 }}</td>
                 <td>{{ row.manufacturer_order_number }}</td>
-                <td>{{ row.code }}</td>
+                <td>{{ row.product_code }}</td>
                 <td>
                   <v-select
                     :options="productList"
@@ -223,7 +223,7 @@ export default {
     },
     getFactoryList(vm) {
       axios.get("api/factories").then(res => {
-        vm.options = _.map(res.data.data, value => {
+        vm.factoryList = _.map(res.data.data, value => {
           return { label: value.name, code: value.id };
         });
       });
@@ -249,9 +249,10 @@ export default {
         });
     }, 350),
     updateProduct(row, product) {
-      row.price_id = product.id;
+      row.product_id = product.id;
       row.product_name = product.label;
       row.product_code = product.code;
+      row.manufacturer_order_number = product.number;
     }
   }
 };
