@@ -21,6 +21,14 @@
               <template v-slot:no-options>
                 Nhập tên đơn vị
               </template>
+              <template #search="{attributes, events}">
+                <input
+                  class="vs__search"
+                  :required="!assignment.factory_id"
+                  v-bind="attributes"
+                  v-on="events"
+                />
+              </template>
             </v-select>
           </b-form-group>
         </b-col>
@@ -238,11 +246,11 @@ export default {
         .then(res => {
           vm.productList = _.map(res.data, value => {
             return {
-              label: value.name,
-              id: value.id,
-              code: value.code,
+              label: value.product_name,
+              id: value.product_id,
+              code: value.product_code,
               quantity: value.quantity,
-              number: value.number
+              number: value.manufacturer_order_number
             };
           });
           loading(false);
@@ -253,6 +261,7 @@ export default {
       row.product_name = product.label;
       row.product_code = product.code;
       row.manufacturer_order_number = product.number;
+      row.quantity = product.quantity;
     }
   }
 };

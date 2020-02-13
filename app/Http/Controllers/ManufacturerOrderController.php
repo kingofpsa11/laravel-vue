@@ -191,23 +191,30 @@ class ManufacturerOrderController extends Controller
             ->groupBy('mnd.contract_detail_id')
             ->select('mnd.contract_detail_id', DB::raw('SUM(mnd.quantity) AS total_quantity'));
 
+        $bom_query = DB::table('boms AS b')
+            ->join('bom_details AS bd', 'b.id', 'bd.bom_id')
+            ->select('b.product_id', 'bd.id', 'bd.product_id AS bom_detail_product_id', 'bd.quantity');
+
         $result = DB::table('manufacturer_orders AS m')
-            ->where('m.number', 'LIKE', '%' . $search . '%')
+            ->where('m.number', $search)
             ->where('md.status', 10)
             ->orderBy('m.id', 'desc')
             ->join('manufacturer_order_details AS md', 'm.id', 'md.manufacturer_order_id')
             ->join('contract_details AS c', 'c.id', 'md.contract_detail_id')
             ->join('prices', 'prices.id', 'c.price_id')
-            ->join('products AS p', 'p.id', 'prices.product_id')
             ->leftJoinSub($query, 'mnd', function ($join) {
                 $join->on('mnd.contract_detail_id', '=', 'md.contract_detail_id');
             })
+            ->joinSub($bom_query, 'b', function ($join) {
+                $join->on('b.product_id', '=', 'prices.product_id');
+            })
+            ->join('products AS p', 'p.id', 'b.bom_detail_product_id')
             ->select(
-                'c.id',
-                'm.number',
-                'p.name',
-                'p.code',
-                'p.id AS product',
+                'c.id AS contract_detail_id',
+                'm.number AS manufacturer_order_number',
+                'p.name AS product_name',
+                'p.code AS product_code',
+                'p.id AS product_id',
                 DB::raw('(c.quantity - IFNULL(mnd.total_quantity, 0)) AS quantity')
             )
             ->having('quantity', '>', 0)
