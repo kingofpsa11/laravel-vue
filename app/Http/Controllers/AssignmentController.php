@@ -26,6 +26,14 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
+        $assignment = new Assignment();
+        if ($assignment->fill($request->all())->save()) {
+            foreach ($request->assignment_details as $detail) {
+                $assignment->assignmentDetails()->create($detail);
+            }
+        };
+        return response('success', 201);
     }
 
     /**

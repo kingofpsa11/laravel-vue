@@ -233,9 +233,14 @@ export default {
       this.contract.contract_details.push({ ...this.newItem });
     },
     onSubmit() {
-      axios.post("/api/contracts", this.form).then(res => {
-        console.log(res.data);
-      });
+      axios
+        .post("/api/contracts", this.contract)
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(this.fo);
+        });
     },
     onSearchCustomer(search, loading) {
       loading(true);

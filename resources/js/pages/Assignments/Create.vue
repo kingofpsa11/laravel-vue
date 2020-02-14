@@ -210,9 +210,14 @@ export default {
       this.assignment.assignment_details.push({ ...this.newItem });
     },
     onSubmit() {
-      axios.post("/api/assignments", this.form).then(res => {
-        console.log(res.data.result);
-      });
+      axios
+        .post("/api/assignments", this.assignment)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(this.assignment);
+        });
     },
     onSearch(search, loading) {
       loading(true);

@@ -17,6 +17,8 @@ class CreateAssignmentDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('assignment_id');
             $table->foreign('assignment_id')->references('id')->on('assignments')->onDelete('cascade');
+            $table->unsignedBigInteger('contract_detail_id');
+            $table->foreign('contract_detail_id')->references('id')->on('contract_details')->onDelete('cascade');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->float('quantity', 8, 2);

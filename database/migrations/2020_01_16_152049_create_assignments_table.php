@@ -15,8 +15,8 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('contract_id');
             $table->unsignedBigInteger('factory_id');
+            $table->foreign('factory_id')->references('id')->on('factories')->onDelete('cascade');
             $table->integer('number');
             $table->date('date');
             $table->integer('status');
