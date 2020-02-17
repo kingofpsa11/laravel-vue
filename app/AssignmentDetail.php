@@ -23,6 +23,21 @@ class AssignmentDetail extends Model
         'status' => 10,
     ];
 
+    public function assignment()
+    {
+        return $this->belongsTo('App\Assignment');
+    }
+
+    public function contractDetail()
+    {
+        return $this->belongsTo('App\ContractDetail');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
+    }
+
     public function setDeadlineAttribute($value)
     {
         $this->attributes['deadline'] = Carbon::createFromFormat(config('app.date_format'), $value, 'Asia/Bangkok')->format('Y-m-d');

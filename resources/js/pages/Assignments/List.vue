@@ -11,20 +11,23 @@
       <b-col>
         <v-server-table
           :columns="columns"
-          url="/api/contracts"
+          url="/api/assignments"
           :options="options"
         >
-          <router-link
-            :to="{
-              name: 'ContractCreate',
-              params: {
-                id: props.row.id
-              }
-            }"
-            slot="action"
-            slot-scope="props"
-          >
-            <b-button variant="success" class="fa fa-edit"></b-button>
+          <template v-slot:action="props">
+            <b-button-group>
+              <router-link
+                :to="`/assignments/${props.row.id}`"
+                class="btn btn-info"
+                >Xem</router-link
+              >
+              <router-link
+                :to="`/assignments/${props.row.id}/edit`"
+                class="btn btn-warning"
+                >Sửa</router-link
+              >
+            </b-button-group>
+          </template>
           </router-link>
         </v-server-table>
       </b-col>

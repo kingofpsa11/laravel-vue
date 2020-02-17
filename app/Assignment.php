@@ -27,6 +27,11 @@ class Assignment extends Model
         return $this->hasMany('App\AssignmentDetail');
     }
 
+    public function factory()
+    {
+        return $this->belongsTo('App\Factory');
+    }
+
     public function setDateAttribute($value)
     {
         $this->attributes['date'] = Carbon::createFromFormat(config('app.date_format'), $value, 'Asia/Bangkok')->format('Y-m-d');

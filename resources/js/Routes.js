@@ -24,6 +24,7 @@ import PriceList from "./pages/Prices/List";
 
 import AssignmentCreate from "./pages/Assignments/Create";
 import AssignmentList from "./pages/Assignments/List";
+import AssignmentView from "./pages/Assignments/View";
 
 import FactoryCreate from "./pages/Factories/Create";
 import FactoryList from "./pages/Factories/List";
@@ -156,6 +157,16 @@ export default new Router({
           path: "assignments/list",
           name: "AssignmentList",
           component: AssignmentList
+        },
+        {
+          path: "assignments/:id",
+          name: "AssignmentView",
+          component: AssignmentView
+        },
+        {
+          path: "assignments/:id/edit",
+          name: "AssignmentEdit",
+          component: AssignmentCreate
         },
         {
           path: "components/icons",

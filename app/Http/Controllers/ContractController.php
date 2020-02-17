@@ -117,9 +117,8 @@ class ContractController extends Controller
      * @param  \App\Contract  $contract
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Contract $contract)
     {
-        $contract = Contract::find($id);
         $contract->load('contractDetails.price.product', 'contractDetails.supplier', 'customer');
 
         return new ContractResource($contract);

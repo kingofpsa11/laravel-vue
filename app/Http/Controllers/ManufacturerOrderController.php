@@ -208,6 +208,7 @@ class ManufacturerOrderController extends Controller
                 'p.name AS product_name',
                 'p.code AS product_code',
                 'p.id AS product_id',
+                'c.id AS contract_detail_id',
                 DB::raw('(c.quantity*b.quantity) AS quantity')
             )
             ->having('quantity', '>', 0)

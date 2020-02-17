@@ -5,7 +5,7 @@
       <b-breadcrumb-item active>Phiếu giao việc</b-breadcrumb-item>
     </b-breadcrumb>
     <h2 class="page-title">
-      Phiếu giao việc - <span class="fw-semi-bold">Tạo mới</span>
+      Phiếu giao việc - <span class="fw-semi-bold"></span>
     </h2>
     <b-form @submit.prevent="onSubmit">
       <b-row>
@@ -166,6 +166,10 @@ export default {
     let yyyy = today.getFullYear();
 
     this.assignment.date = dd + "/" + mm + "/" + yyyy;
+
+    if (this.$route.params.id) {
+      this.getAssignments(this.$route.params.id);
+    }
   },
   data() {
     return {
@@ -177,6 +181,7 @@ export default {
           {
             id: "",
             manufacturer_order_number: "",
+            contract_detail_id: "",
             product_id: "",
             product_code: "",
             product_name: "",
@@ -189,6 +194,7 @@ export default {
       newItem: {
         id: "",
         manufacturer_order_number: "",
+        contract_detail_id: "",
         product_id: "",
         product_code: "",
         product_name: "",
@@ -206,6 +212,11 @@ export default {
     }
   },
   methods: {
+    getAssignments(id) {
+      axios.get(`api/assignments/${id}`).then(res => {
+        this.assignment = res.data.data;
+      });
+    },
     addRow() {
       this.assignment.assignment_details.push({ ...this.newItem });
     },
@@ -213,7 +224,8 @@ export default {
       axios
         .post("/api/assignments", this.assignment)
         .then(res => {
-          console.log(res);
+          if (res.data.status === "success")
+            this.$router.push("/assignments/" + res.data.id);
         })
         .catch(error => {
           console.log(this.assignment);
@@ -255,7 +267,8 @@ export default {
               id: value.product_id,
               code: value.product_code,
               quantity: value.quantity,
-              number: value.manufacturer_order_number
+              number: value.manufacturer_order_number,
+              contract_detail_id: value.contract_detail_id
             };
           });
           loading(false);
@@ -267,6 +280,7 @@ export default {
       row.product_code = product.code;
       row.manufacturer_order_number = product.number;
       row.quantity = product.quantity;
+      row.contract_detail_id = product.contract_detail_id;
     }
   }
 };
