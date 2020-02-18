@@ -91,6 +91,28 @@
         ]"
       />
       <NavLink
+        :activeItem="activeItem"
+        header="Phiếu xin lĩnh vật tư"
+        link="/material-requisitions"
+        iconName="flaticon-list"
+        index="material-requisitions"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/material-requisitions/create' },
+          { header: 'Danh sách', link: '/material-requisitions/list' }
+        ]"
+      />
+      <NavLink
+        :activeItem="activeItem"
+        header="Phiếu xuất hàng"
+        link="/good-deliveries"
+        iconName="flaticon-list"
+        index="good-deliveries"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/good-deliveries/create' },
+          { header: 'Danh sách', link: '/good-deliveries/list' }
+        ]"
+      />
+      <NavLink
         header="Notifications"
         link="/app/notifications"
         iconName="flaticon-star"

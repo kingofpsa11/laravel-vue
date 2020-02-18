@@ -43,47 +43,34 @@ export default {
   data() {
     return {
       columns: [
-        "customer_id",
+        "factory_name",
         "number",
-        "price_id",
-        "quantity",
-        "selling_price",
         "date",
+        'manufacturer_order_number',
+        'product_code',
+        'product_name',
+        "quantity",
         "deadline",
-        "order",
         "status",
         "action"
       ],
       options: {
         headings: {
-          customer_id: "ĐVDH",
-          number: "Số đơn hàng",
-          price_id: "Tên sản phẩm",
+          factory_name: "Đơn vị",
+          number: "Số phiếu",
+          manufacturer_order_number: "LSX",
+          product_code: 'Mã SP',
+          product_name: "Tên sản phẩm",
           quantity: "Số lượng",
-          selling_price: "Đơn giá",
           date: "Ngày lập",
           deadline: "Tiến độ",
-          order: "LSX",
           status: "Trạng thái"
         },
         filterByColumn: true,
-        templates: {
-          date(h, row) {
-            return moment(row.date).format("DD-MM-YYYY");
-          }
-        }
       },
-      perPage: 25
+      perPage: 10
     };
   },
-  methods: {
-    parseDate(date) {
-      const dateSet = date.toDateString().split(" ");
-      return `${date.toLocaleString("en-us", { month: "long" })} ${
-        dateSet[2]
-      }, ${dateSet[3]}`;
-    }
-  }
 };
 </script>
 

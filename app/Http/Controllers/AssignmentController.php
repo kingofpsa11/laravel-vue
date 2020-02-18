@@ -20,7 +20,7 @@ class AssignmentController extends Controller
         $results = [];
         extract($request->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
         $query = json_decode($query);
-        $data = AssignmentDetail::with(['assignment.factory', 'product']);
+        $data = AssignmentDetail::with(['assignment.factory', 'product', 'contractDetail.manufacturerOrderDetail.manufacturerOrder']);
 
         if (isset($query) && $query) {
             $data = $byColumn == 1 ?

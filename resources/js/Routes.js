@@ -28,6 +28,14 @@ import AssignmentView from "./pages/Assignments/View";
 
 import FactoryCreate from "./pages/Factories/Create";
 import FactoryList from "./pages/Factories/List";
+
+import MaterialRequisitionView from "./pages/MaterialRequisitions/View";
+import MaterialRequisitionCreate from "./pages/MaterialRequisitions/Create";
+import MaterialRequisitionList from "./pages/MaterialRequisitions/List";
+
+import GoodDeliveryView from "./pages/GoodDeliveries/View";
+import GoodDeliveryCreate from "./pages/GoodDeliveries/Create";
+import GoodDeliveryList from "./pages/GoodDeliveries/List";
 // Tables
 import TablesBasicPage from "./pages/Tables/Basic";
 
@@ -167,6 +175,46 @@ export default new Router({
           path: "assignments/:id/edit",
           name: "AssignmentEdit",
           component: AssignmentCreate
+        },
+        {
+          path: "material-requisitions/create",
+          name: "MaterialRequisitionCreate",
+          component: MaterialRequisitionCreate
+        },
+        {
+          path: "material-requisitions/list",
+          name: "MaterialRequisitionList",
+          component: MaterialRequisitionList
+        },
+        {
+          path: "material-requisitions/:id",
+          name: "MaterialRequisitionView",
+          component: MaterialRequisitionView
+        },
+        {
+          path: "material-requisitions/:id/edit",
+          name: "MaterialRequisitionEdit",
+          component: MaterialRequisitionCreate
+        },
+        {
+          path: "good-deliveries/create",
+          name: "GoodDeliveryCreate",
+          component: GoodDeliveryCreate
+        },
+        {
+          path: "good-deliveries/list",
+          name: "GoodDeliveryList",
+          component: GoodDeliveryList
+        },
+        {
+          path: "good-deliveries/:id",
+          name: "GoodDeliveryView",
+          component: GoodDeliveryView
+        },
+        {
+          path: "good-deliveries/:id/edit",
+          name: "GoodDeliveryEdit",
+          component: GoodDeliveryCreate
         },
         {
           path: "components/icons",
