@@ -23,7 +23,7 @@ class GoodReceiveResource extends JsonResource
             'supplier_name' => $this->supplier->name,
             'supplier_id' => $this->supplier_id,
             'date' => $this->date,
-            'good_delivery_details' => GoodReceiveDetailResource::collection($this->goodReceiveDetails),
+            'good_receive_details' => GoodReceiveDetailResource::collection($this->goodReceiveDetails),
         ];
     }
 }

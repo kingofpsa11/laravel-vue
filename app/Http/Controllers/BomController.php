@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class BomController extends Controller
 {
-    protected $bom;
-
-    public function __construct(Bom $bom)
-    {
-        $this->bom = $bom;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -96,16 +89,16 @@ class BomController extends Controller
      */
     public function store(Request $request)
     {
-        $this->bom->fill($request->all())->save();
-        for ($i = 0; $i < count($request->code); $i++) {
-            BomDetail::create([
-                'bom_id' => $this->bom->id,
-                'product_id' => $request->bom_product_id[$i],
-                'quantity' => $request->quantity[$i],
-            ]);
+        $bom = new Bom();
+        $bom->fill($request->all())->save();
+        foreach ($request->bom_details as $detail) {
+            $bom->bomDetails()->create($detail);
         }
 
-        return redirect()->route('boms.show', $this->bom);
+        return response()->json([
+            'id' => $bom->id,
+            'status' => 'success'
+        ]);
     }
 
     /**

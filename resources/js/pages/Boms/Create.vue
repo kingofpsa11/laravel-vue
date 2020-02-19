@@ -56,6 +56,7 @@
                 <td>
                   <v-select
                     :options="productList"
+                    :selectOnTab="true"
                     @search="onSearchProduct"
                     :filterable="false"
                     @input="product => updateProductDetail(row, product)"
@@ -114,7 +115,7 @@ export default {
       bom: {
         product_name: "",
         product_id: "",
-        bom_name: "",
+        name: "",
         bom_details: [
           {
             product_id: "",
@@ -154,7 +155,7 @@ export default {
       this.bom.bom_details.push({ ...this.newItem });
     },
     onSubmit() {
-      axios.post("/api/boms", this.form).then(res => {
+      axios.post("/api/boms", this.bom).then(res => {
         console.log(res.data);
       });
     },

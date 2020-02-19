@@ -28,7 +28,10 @@ class FactoryController extends Controller
     {
         $factory = Factory::create($request->all());
 
-        return response(['factory' => $factory], 201);
+        return response()->json([
+            'id' => $factory->id,
+            'status' => 'success'
+        ]);
     }
 
     /**
@@ -39,7 +42,7 @@ class FactoryController extends Controller
      */
     public function show(Factory $factory)
     {
-        //
+        return response()->json($factory);
     }
 
     /**

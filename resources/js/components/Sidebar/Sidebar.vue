@@ -119,27 +119,8 @@
         iconName="flaticon-list"
         index="good-receives"
         :childrenLinks="[
-          { header: 'Tạo mới', link: '/good-receives/create' },
-          { header: 'Danh sách', link: '/good-receives/list' }
-        ]"
-      />
-      <NavLink
-        header="Notifications"
-        link="/app/notifications"
-        iconName="flaticon-star"
-        index="notifications"
-        isHeader
-      />
-      <NavLink
-        :activeItem="activeItem"
-        header="Components"
-        link="/app/components"
-        iconName="flaticon-network"
-        index="components"
-        :childrenLinks="[
-          { header: 'Charts', link: '/app/components/charts' },
-          { header: 'Icons', link: '/app/components/icons' },
-          { header: 'Maps', link: '/app/components/maps' }
+          { header: 'Tạo mới', link: '/good-receive/create' },
+          { header: 'Danh sách', link: '/good-receive/list' }
         ]"
       />
     </ul>

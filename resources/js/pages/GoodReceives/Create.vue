@@ -182,7 +182,7 @@ export default {
     this.good_receive.date = dd + "/" + mm + "/" + yyyy;
 
     if (this.$route.params.id) {
-      this.getGoodReceives(this.$route.params.id);
+      this.getGoodReceive(this.$route.params.id);
     }
   },
   computed: {
@@ -191,8 +191,8 @@ export default {
     }
   },
   methods: {
-    getGoodReceives(id) {
-      axios.get(`api/good-receives/${id}`).then(res => {
+    getGoodReceive(id) {
+      axios.get(`api/good-receive/${id}`).then(res => {
         this.good_receive = res.data.data;
       });
     },
@@ -201,10 +201,10 @@ export default {
     },
     onSubmit() {
       axios
-        .post("/api/good-receives", this.good_receive)
+        .post("/api/good-receive", this.good_receive)
         .then(res => {
           if (res.data.status === "success")
-            this.$router.push("/good-receives/" + res.data.id);
+            this.$router.push("/good-receive/" + res.data.id);
         })
         .catch(error => {
           console.log(this.good_receive);
@@ -216,7 +216,6 @@ export default {
     },
     searchSupplier: _.debounce((loading, search, vm) => {
       axios.get(`api/suppliers/search?q=${encodeURI(search)}`).then(res => {
-        console.log(res);
         vm.supplierList = res.data;
         loading(false);
       });

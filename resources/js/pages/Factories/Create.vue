@@ -31,6 +31,11 @@
 import Vue from "vue";
 
 export default {
+  created() {
+    if (this.$route.params.id) {
+      this.getFactory(this.$route.params.id);
+    }
+  },
   data() {
     return {
       factory: {
@@ -42,13 +47,19 @@ export default {
     createFactory() {
       axios
         .post("/api/factories", this.factory)
-        .then(response => {
-          // this.$router.push("/factories/list");
-          console.log(response);
+        .then(res => {
+          if (res.data.status === "success") {
+            this.$router.push("/factories/" + res.data.id);
+          }
         })
         .catch(error => {
           this.errors = error.response.data.errors.name;
         });
+    },
+    getFactory(id) {
+      axios.get(`api/factories/${id}`).then(res => {
+        this.factory = res.data;
+      });
     }
   }
 };

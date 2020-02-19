@@ -20,7 +20,7 @@
               :filterable="false"
             >
               <template v-slot:no-options>
-                Nhập tên kho
+                Nhập tên đơn vị
               </template>
             </v-select>
           </b-form-group>
@@ -148,14 +148,7 @@ export default {
         note: ""
       },
       departmentList: [],
-      productList: [],
-      currencyFormat: {
-        alias: "integer",
-        groupSeparator: ".",
-        autoGroup: true,
-        removeMaskOnSubmit: true,
-        unmaskAsNumber: true
-      }
+      productList: []
     };
   },
   created() {
@@ -188,13 +181,13 @@ export default {
     },
     onSubmit() {
       axios
-        .post("/api/assignments", this.assignment)
+        .post("/api/material_requistions", this.material_requistion)
         .then(res => {
           if (res.data.status === "success")
-            this.$router.push("/assignments/" + res.data.id);
+            this.$router.push("/material_requistions/" + res.data.id);
         })
         .catch(error => {
-          console.log(this.assignment);
+          console.log(this.material_requistion);
         });
     },
     onSearchDepartment(search, loading) {
@@ -203,7 +196,7 @@ export default {
     },
     searchDepartment: _.debounce((loading, search, vm) => {
       axios.get(`api/departments/search?q=${encodeURI(search)}`).then(res => {
-        vm.departmentList = _.map(res.data.data, value => {
+        vm.departmentList = _.map(res.data, value => {
           return { label: value.name, code: value.id };
         });
         loading(false);

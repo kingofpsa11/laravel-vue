@@ -2,17 +2,17 @@
   <div class="tables-basic">
     <b-breadcrumb>
       <b-breadcrumb-item>Hapulico</b-breadcrumb-item>
-      <b-breadcrumb-item active>Phiếu xuất kho</b-breadcrumb-item>
+      <b-breadcrumb-item active>Phiếu nhập kho</b-breadcrumb-item>
     </b-breadcrumb>
     <h2 class="page-title">
-      Phiếu xuất kho - <span class="fw-semi-bold">Xem</span>
+      Phiếu nhập kho - <span class="fw-semi-bold">Xem</span>
     </h2>
     <b-form>
       <b-row>
         <b-col>
-          <b-form-group label="Khách Hàng" name="customer">
+          <b-form-group label="Khách Hàng" name="supplier">
             <b-form-input
-              :value="good_receive.customer_name"
+              :value="good_receive.supplier_name"
               readonly
             ></b-form-input>
           </b-form-group>
@@ -64,16 +64,14 @@
                 <td>
                   {{ row.store_name }}
                 </td>
-                <td>
-                  {{ row.note }}
-                </td>
               </b-tr>
             </b-tbody>
           </table>
-          <router-link :to="`/good-receive/${id}/edit`" class="btn btn-warning"
+          <router-link :to="`/good-receive/${id}/edit`" class="btn btn-info"
             >Sửa</router-link
           >
           <b-button variant="success" @click="onApproved">Duyệt</b-button>
+          <b-button variant="warning" @click="onQualityCheck">KCS</b-button>
         </b-col>
       </b-row>
     </b-form>
@@ -88,7 +86,7 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.id = this.$route.params.id;
-      this.getGoodReceives(this.id);
+      this.getGoodReceive(this.id);
     }
   },
   data() {
@@ -103,7 +101,7 @@ export default {
     }
   },
   methods: {
-    getGoodReceives(id) {
+    getGoodReceive(id) {
       axios.get(`api/good-receive/${id}`).then(res => {
         this.good_receive = res.data.data;
       });
@@ -114,6 +112,15 @@ export default {
           this.$router.push("/");
         }
       });
+    },
+    onQualityCheck() {
+      axios
+        .put(`api/good-receive/${this.id}`, { quantity_check: true })
+        .then(res => {
+          if (res.data.data === "success") {
+            this.$router.push("/");
+          }
+        });
     }
   }
 };

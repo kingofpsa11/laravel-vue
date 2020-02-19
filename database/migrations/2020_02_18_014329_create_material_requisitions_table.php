@@ -15,6 +15,12 @@ class CreateMaterialRequisitionsTable extends Migration
     {
         Schema::create('material_requisitions', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('department_id');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->integer('number');
+            $table->date('date');
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->timestamps();
         });
     }

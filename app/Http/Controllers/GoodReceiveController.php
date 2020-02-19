@@ -20,7 +20,7 @@ class GoodReceiveController extends Controller
         $results = [];
         extract($request->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
         $query = json_decode($query);
-        $data = GoodReceiveDetail::with(['goodReceive.customer', 'product', 'store']);
+        $data = GoodReceiveDetail::with(['goodReceive.supplier', 'product', 'store']);
 
         if (isset($query) && $query) {
             $data = $byColumn == 1 ?
@@ -41,8 +41,8 @@ class GoodReceiveController extends Controller
 
         foreach ($result as $value) {
             $results[] = [
-                'id' => $value->good_delivery_id,
-                'customer_name' => $value->goodReceive->customer->name,
+                'id' => $value->good_receive_id,
+                'supplier_name' => $value->goodReceive->supplier->name,
                 'number' => $value->goodReceive->number,
                 'product_name' => $value->product->name,
                 'product_code' => $value->product->code,

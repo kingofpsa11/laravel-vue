@@ -35,6 +35,8 @@ Route::get('customers/search', 'CustomerController@getCustomer');
 Route::resource('customers', 'CustomerController');
 Route::get('suppliers/search', 'SupplierController@getSupplier');
 Route::resource('suppliers', 'SupplierController');
+Route::get('departments/search', 'DepartmentController@getDepartment');
+Route::resource('departments', 'DepartmentController');
 
 Route::get('products/search', 'ProductController@getProduct');
 Route::resource('products', 'ProductController');

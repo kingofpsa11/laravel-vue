@@ -64,9 +64,6 @@
                 <td>
                   {{ row.store_name }}
                 </td>
-                <td>
-                  {{ row.note }}
-                </td>
               </b-tr>
             </b-tbody>
           </table>

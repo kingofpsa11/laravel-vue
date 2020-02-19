@@ -2,27 +2,27 @@
   <b-container fluid>
     <b-breadcrumb>
       <b-breadcrumb-item>Hapulico</b-breadcrumb-item>
-      <b-breadcrumb-item active>Đơn hàng</b-breadcrumb-item>
+      <b-breadcrumb-item active>Phiếu nhập kho</b-breadcrumb-item>
     </b-breadcrumb>
     <h2 class="page-title">
-      Đơn hàng - <span class="fw-semi-bold">Tạo mới</span>
+      Phiếu nhập kho - <span class="fw-semi-bold">Danh sách</span>
     </h2>
     <b-row>
       <b-col>
         <v-server-table
           :columns="columns"
-          url="/api/good-deliveries"
+          url="/api/good-receive"
           :options="options"
         >
           <template v-slot:action="props">
             <b-button-group>
               <router-link
-                :to="`/good-deliveries/${props.row.id}`"
+                :to="`/good-receive/${props.row.id}`"
                 class="btn btn-info"
                 >Xem</router-link
               >
               <router-link
-                :to="`/good-deliveries/${props.row.id}/edit`"
+                :to="`/good-receive/${props.row.id}/edit`"
                 class="btn btn-warning"
                 >Sửa</router-link
               >
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       columns: [
-        "customer_name",
+        "supplier_name",
         "number",
         "product_code",
         "product_name",
@@ -52,14 +52,13 @@ export default {
       ],
       options: {
         headings: {
-          customer_name: "Khách hàng",
+          supplier_name: "Đơn vị",
           number: "Số phiếu",
           product_name: "Tên sản phẩm",
           product_code: "Mã sản phẩm",
           quantity: "Số lượng",
           date: "Ngày lập",
-          store_name: "Kho",
-          order: "LSX"
+          store_name: "Kho"
         },
         filterByColumn: true,
         templates: {

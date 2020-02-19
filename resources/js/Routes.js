@@ -26,6 +26,7 @@ import AssignmentCreate from "./pages/Assignments/Create";
 import AssignmentList from "./pages/Assignments/List";
 import AssignmentView from "./pages/Assignments/View";
 
+import FactoryView from "./pages/Factories/View";
 import FactoryCreate from "./pages/Factories/Create";
 import FactoryList from "./pages/Factories/List";
 
@@ -161,6 +162,16 @@ export default new Router({
           component: FactoryList
         },
         {
+          path: "factories/:id",
+          name: "FactoryView",
+          component: FactoryView
+        },
+        {
+          path: "factories/:id/edit",
+          name: "FactoryEdit",
+          component: FactoryCreate
+        },
+        {
           path: "assignments/create",
           name: "AssignmentCreate",
           component: AssignmentCreate
@@ -221,22 +232,22 @@ export default new Router({
           component: GoodDeliveryCreate
         },
         {
-          path: "good-receives/create",
+          path: "good-receive/create",
           name: "GoodReceiveCreate",
           component: GoodReceiveCreate
         },
         {
-          path: "good-receives/list",
+          path: "good-receive/list",
           name: "GoodReceiveList",
           component: GoodReceiveList
         },
         {
-          path: "good-receives/:id",
+          path: "good-receive/:id",
           name: "GoodReceiveView",
           component: GoodReceiveView
         },
         {
-          path: "good-receives/:id/edit",
+          path: "good-receive/:id/edit",
           name: "GoodReceiveEdit",
           component: GoodReceiveCreate
         },
