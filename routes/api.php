@@ -33,6 +33,8 @@ Route::group([
 
 Route::get('customers/search', 'CustomerController@getCustomer');
 Route::resource('customers', 'CustomerController');
+Route::get('suppliers/search', 'SupplierController@getSupplier');
+Route::resource('suppliers', 'SupplierController');
 
 Route::get('products/search', 'ProductController@getProduct');
 Route::resource('products', 'ProductController');
@@ -50,7 +52,7 @@ Route::resource('factories', 'FactoryController');
 Route::resource('assignments', 'AssignmentController');
 Route::resource('material-requisitions', 'MaterialRequisitionController');
 Route::resource('good-deliveries', 'GoodDeliveryController');
-Route::resource('good-receives', 'GoodReceiveController');
+Route::resource('good-receive', 'GoodReceiveController');
 
 Route::get('stores/search', 'StoreController@getStore');
 Route::resource('stores', 'StoreController');

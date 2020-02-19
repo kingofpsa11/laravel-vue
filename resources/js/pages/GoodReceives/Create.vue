@@ -2,22 +2,23 @@
   <div class="tables-basic">
     <b-breadcrumb>
       <b-breadcrumb-item>Hapulico</b-breadcrumb-item>
-      <b-breadcrumb-item active>Phiếu xuất kho</b-breadcrumb-item>
+      <b-breadcrumb-item active>Phiếu nhập kho</b-breadcrumb-item>
     </b-breadcrumb>
     <h2 class="page-title">
-      Phiếu xuất kho - <span class="fw-semi-bold">Tạo mới</span>
+      Phiếu nhập kho - <span class="fw-semi-bold">Tạo mới</span>
     </h2>
     <b-form @submit.prevent="onSubmit">
       <b-row>
         <b-col>
-          <b-form-group label="Khách Hàng" name="customer">
+          <b-form-group label="Đơn vị giao hàng" name="supplier">
             <v-select
-              :options="customerList"
+              :options="supplierList"
               :selectOnTab="true"
-              :value="good_delivery.customer_name"
-              @input="customer => updateCustomer(customer)"
-              @search="onSearchCustomer"
+              :value="good_receive.supplier_name"
+              @input="supplier => updateSupplier(supplier)"
+              @search="onSearchSupplier"
               :filterable="false"
+              label="name"
             >
               <template v-slot:no-options>
                 Nhập tên khách hàng
@@ -30,7 +31,7 @@
         <b-col md="4">
           <b-form-group label="Số phiếu">
             <b-form-input
-              v-model="good_delivery.number"
+              v-model="good_receive.number"
               type="number"
               required
               placeholder="Nhập số phiếu"
@@ -43,7 +44,7 @@
               type="text"
               class="form-control"
               v-mask="{ alias: 'dd/mm/yyyy' }"
-              v-model="good_delivery.date"
+              v-model="good_receive.date"
             />
           </b-form-group>
         </b-col>
@@ -62,7 +63,7 @@
             </b-thead>
             <b-tbody>
               <b-tr
-                v-for="(row, index) in good_delivery.good_delivery_details"
+                v-for="(row, index) in good_receive.good_receive_details"
                 :key="row.id"
               >
                 <td>{{ index + 1 }}</td>
@@ -147,10 +148,10 @@ import _ from "lodash";
 export default {
   data() {
     return {
-      good_delivery: {
-        customer_id: "",
+      good_receive: {
+        supplier_id: "",
         number: "",
-        good_delivery_details: [
+        good_receive_details: [
           {
             product_code: "",
             product_name: "",
@@ -167,7 +168,7 @@ export default {
         quantity: null,
         store_id: ""
       },
-      customerList: [],
+      supplierList: [],
       productList: [],
       storeList: []
     };
@@ -178,46 +179,45 @@ export default {
     let mm = String(today.getMonth() + 1).padStart(2, "0");
     let yyyy = today.getFullYear();
 
-    this.good_delivery.date = dd + "/" + mm + "/" + yyyy;
+    this.good_receive.date = dd + "/" + mm + "/" + yyyy;
 
     if (this.$route.params.id) {
-      this.getGoodDeliveries(this.$route.params.id);
+      this.getGoodReceives(this.$route.params.id);
     }
   },
   computed: {
     count() {
-      return this.good_delivery.good_delivery_details.length;
+      return this.good_receive.good_receive_details.length;
     }
   },
   methods: {
-    getGoodDeliveries(id) {
-      axios.get(`api/good-deliveries/${id}`).then(res => {
-        this.good_delivery = res.data.data;
+    getGoodReceives(id) {
+      axios.get(`api/good-receives/${id}`).then(res => {
+        this.good_receive = res.data.data;
       });
     },
     addRow() {
-      this.good_delivery.good_delivery_details.push({ ...this.newItem });
+      this.good_receive.good_receive_details.push({ ...this.newItem });
     },
     onSubmit() {
       axios
-        .post("/api/good-deliveries", this.good_delivery)
+        .post("/api/good-receives", this.good_receive)
         .then(res => {
           if (res.data.status === "success")
-            this.$router.push("/good-deliveries/" + res.data.id);
+            this.$router.push("/good-receives/" + res.data.id);
         })
         .catch(error => {
-          console.log(this.good_delivery);
+          console.log(this.good_receive);
         });
     },
-    onSearchCustomer(search, loading) {
+    onSearchSupplier(search, loading) {
       loading(true);
-      this.searchCustomer(loading, search, this);
+      this.searchSupplier(loading, search, this);
     },
-    searchCustomer: _.debounce((loading, search, vm) => {
-      axios.get(`api/customers/search?q=${encodeURI(search)}`).then(res => {
-        vm.customerList = _.map(res.data.data, value => {
-          return { label: value.name, code: value.id };
-        });
+    searchSupplier: _.debounce((loading, search, vm) => {
+      axios.get(`api/suppliers/search?q=${encodeURI(search)}`).then(res => {
+        console.log(res);
+        vm.supplierList = res.data;
         loading(false);
       });
     }, 350),
@@ -228,8 +228,8 @@ export default {
     searchProduct: _.debounce((loading, search, vm) => {
       axios
         .get(
-          `api/products/search?q=${encodeURI(search)}&customer_id=${
-            vm.good_delivery.customer_id
+          `api/products/search?q=${encodeURI(search)}&supplier_id=${
+            vm.good_receive.supplier_id
           }`
         )
         .then(res => {
@@ -256,9 +256,9 @@ export default {
         loading(false);
       });
     }, 350),
-    updateCustomer(customer) {
-      this.good_delivery.customer_name = customer.label;
-      this.good_delivery.customer_id = customer.code;
+    updateSupplier(supplier) {
+      this.good_receive.supplier_name = supplier.name;
+      this.good_receive.supplier_id = supplier.id;
     },
     updateProduct(row, product) {
       row.product_id = product.id;
@@ -270,7 +270,7 @@ export default {
       row.store_name = store.name;
     },
     deleteRow(index) {
-      this.good_delivery.good_delivery_details.splice(index, 1);
+      this.good_receive.good_receive_details.splice(index, 1);
     }
   }
 };

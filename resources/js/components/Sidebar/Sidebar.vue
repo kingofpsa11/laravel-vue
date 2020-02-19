@@ -103,13 +103,24 @@
       />
       <NavLink
         :activeItem="activeItem"
-        header="Phiếu xuất hàng"
+        header="Phiếu xuất kho"
         link="/good-deliveries"
         iconName="flaticon-list"
         index="good-deliveries"
         :childrenLinks="[
           { header: 'Tạo mới', link: '/good-deliveries/create' },
           { header: 'Danh sách', link: '/good-deliveries/list' }
+        ]"
+      />
+      <NavLink
+        :activeItem="activeItem"
+        header="Phiếu nhập kho"
+        link="/good-receives"
+        iconName="flaticon-list"
+        index="good-receives"
+        :childrenLinks="[
+          { header: 'Tạo mới', link: '/good-receives/create' },
+          { header: 'Danh sách', link: '/good-receives/list' }
         ]"
       />
       <NavLink

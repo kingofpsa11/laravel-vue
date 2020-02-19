@@ -12,7 +12,7 @@
         <b-col>
           <b-form-group label="Khách Hàng" name="customer">
             <b-form-input
-              :value="good_delivery.customer_name"
+              :value="good_receive.customer_name"
               readonly
             ></b-form-input>
           </b-form-group>
@@ -21,7 +21,7 @@
       <b-row>
         <b-col md="4">
           <b-form-group label="Số đơn hàng">
-            <b-form-input :value="good_delivery.number" readonly></b-form-input>
+            <b-form-input :value="good_receive.number" readonly></b-form-input>
           </b-form-group>
         </b-col>
         <b-col md="4">
@@ -30,7 +30,7 @@
               type="text"
               class="form-control"
               v-mask="{ alias: 'dd/mm/yyyy' }"
-              :value="good_delivery.date"
+              :value="good_receive.date"
               readonly
             />
           </b-form-group>
@@ -50,7 +50,7 @@
             </b-thead>
             <b-tbody>
               <b-tr
-                v-for="(row, index) in good_delivery.good_delivery_details"
+                v-for="(row, index) in good_receive.good_receive_details"
                 :key="row.id"
               >
                 <td>{{ index + 1 }}</td>
@@ -70,9 +70,7 @@
               </b-tr>
             </b-tbody>
           </table>
-          <router-link
-            :to="`/good-deliveries/${id}/edit`"
-            class="btn btn-warning"
+          <router-link :to="`/good-receive/${id}/edit`" class="btn btn-warning"
             >Sửa</router-link
           >
           <b-button variant="success" @click="onApproved">Duyệt</b-button>
@@ -90,34 +88,32 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.id = this.$route.params.id;
-      this.getGoodDeliveries(this.id);
+      this.getGoodReceives(this.id);
     }
   },
   data() {
     return {
       id: null,
-      good_delivery: {}
+      good_receive: {}
     };
   },
   computed: {
     count() {
-      return this.good_delivery.good_delivery_details.length;
+      return this.good_receive.good_receive_details.length;
     }
   },
   methods: {
-    getGoodDeliveries(id) {
-      axios.get(`api/good-deliveries/${id}`).then(res => {
-        this.good_delivery = res.data.data;
+    getGoodReceives(id) {
+      axios.get(`api/good-receive/${id}`).then(res => {
+        this.good_receive = res.data.data;
       });
     },
     onApproved() {
-      axios
-        .put(`api/good-deliveries/${this.id}`, { approved: true })
-        .then(res => {
-          if (res.data.data === "success") {
-            this.$router.push("/");
-          }
-        });
+      axios.put(`api/good-receive/${this.id}`, { approved: true }).then(res => {
+        if (res.data.data === "success") {
+          this.$router.push("/");
+        }
+      });
     }
   }
 };

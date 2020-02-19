@@ -36,6 +36,10 @@ import MaterialRequisitionList from "./pages/MaterialRequisitions/List";
 import GoodDeliveryView from "./pages/GoodDeliveries/View";
 import GoodDeliveryCreate from "./pages/GoodDeliveries/Create";
 import GoodDeliveryList from "./pages/GoodDeliveries/List";
+
+import GoodReceiveView from "./pages/GoodReceives/View";
+import GoodReceiveCreate from "./pages/GoodReceives/Create";
+import GoodReceiveList from "./pages/GoodReceives/List";
 // Tables
 import TablesBasicPage from "./pages/Tables/Basic";
 
@@ -215,6 +219,26 @@ export default new Router({
           path: "good-deliveries/:id/edit",
           name: "GoodDeliveryEdit",
           component: GoodDeliveryCreate
+        },
+        {
+          path: "good-receives/create",
+          name: "GoodReceiveCreate",
+          component: GoodReceiveCreate
+        },
+        {
+          path: "good-receives/list",
+          name: "GoodReceiveList",
+          component: GoodReceiveList
+        },
+        {
+          path: "good-receives/:id",
+          name: "GoodReceiveView",
+          component: GoodReceiveView
+        },
+        {
+          path: "good-receives/:id/edit",
+          name: "GoodReceiveEdit",
+          component: GoodReceiveCreate
         },
         {
           path: "components/icons",

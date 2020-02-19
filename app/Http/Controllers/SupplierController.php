@@ -82,4 +82,14 @@ class SupplierController extends Controller
     {
         //
     }
+
+    public function getSupplier(Request $request)
+    {
+        $term = $request->q;
+
+        $listCustomer = Supplier::where('name', 'LIKE', '%' . $term . '%')
+            ->get();
+            
+        return response()->json($listCustomer);
+    }
 }
