@@ -51,6 +51,7 @@ Route::resource('manufacturer-orders', 'ManufacturerOrderController');
 
 Route::get('factories/search', 'FactoryController@getFactory');
 Route::resource('factories', 'FactoryController');
+Route::get('assignments/getNewNumber', 'AssignmentController@getNewNumber');
 Route::resource('assignments', 'AssignmentController');
 Route::resource('material-requisitions', 'MaterialRequisitionController');
 Route::resource('good-deliveries', 'GoodDeliveryController');

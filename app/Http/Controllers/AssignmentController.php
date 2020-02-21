@@ -150,4 +150,9 @@ class AssignmentController extends Controller
     {
         //
     }
+
+    public function getNewNumber()
+    {
+        return Assignment::whereYear('date', date('Y'))->orderBy('number', 'desc')->first()->number + 1 ?? 1;
+    }
 }

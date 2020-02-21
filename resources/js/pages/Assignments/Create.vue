@@ -80,10 +80,10 @@
                 <td>
                   <v-select
                     :options="productList"
+                    :selectOnTab="true"
                     @search="onSearchProduct"
                     :filterable="false"
                     @input="product => updateProduct(row, product)"
-                    name="product_id"
                     :value="row.product_name"
                   >
                     <template #search="{attributes, events}">
@@ -95,7 +95,7 @@
                       />
                     </template>
                     <template v-slot:no-options>
-                      Chọn sản phẩm
+                      Chọn lệnh sản xuất
                     </template>
                     <template v-slot:option="option">
                       <div class="container-fluid">
@@ -158,6 +158,7 @@ import moment from "moment";
 
 export default {
   created() {
+    this.getNewNumber();
     this.getFactoryList(this);
 
     let today = new Date();
@@ -215,6 +216,11 @@ export default {
     getAssignments(id) {
       axios.get(`api/assignments/${id}`).then(res => {
         this.assignment = res.data.data;
+      });
+    },
+    getNewNumber() {
+      axios.get(`api/assignments/getNewNumber`).then(res => {
+        this.assignment.number = res.data;
       });
     },
     addRow() {
