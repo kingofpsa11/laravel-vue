@@ -86,8 +86,8 @@
               </b-tr>
             </b-tbody>
           </table>
-          <b-button variant="primary" @click="onReceived"
-            >Nhận lệnh sản xuất</b-button
+          <b-button variant="primary" @click="onReceived" v-if="isLoad"
+            >Tạo phiếu giao việc</b-button
           >
         </b-col>
       </b-row>
@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       id: null,
+      isLoad: false,
       manufacturer_order: {}
     };
   },
@@ -119,6 +120,7 @@ export default {
     getManufacturer(id) {
       axios.get(`api/manufacturer-orders/${id}`).then(res => {
         this.manufacturer_order = res.data.data;
+        this.isLoad = true;
       });
     },
     onReceived() {
@@ -127,9 +129,8 @@ export default {
           manufacturer_order_id: this.id
         })
         .then(res => {
-          console.log(res);
           if (res.data.status === "success") {
-            this.$router.push(`/assignments/${res.data.id}`);
+            this.$router.push(`/assignments/${res.data.id}/edit`);
           }
         });
     }

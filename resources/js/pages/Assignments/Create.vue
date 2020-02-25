@@ -227,15 +227,24 @@ export default {
       this.assignment.assignment_details.push({ ...this.newItem });
     },
     onSubmit() {
-      axios
-        .post("/api/assignments", this.assignment)
-        .then(res => {
-          if (res.data.status === "success")
-            this.$router.push("/assignments/" + res.data.id);
-        })
-        .catch(error => {
-          console.log(this.assignment);
-        });
+      let currentRoute = this.$route.path;
+      if (currentRoute.includes("edit")) {
+        axios
+          .put(currentRoute, this.assignment)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/assignments/" + res.data.id);
+          })
+          .catch(error => {});
+      } else {
+        axios
+          .post("/api/assignments", this.assignment)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/assignments/" + res.data.id);
+          })
+          .catch(error => {});
+      }
     },
     onSearch(search, loading) {
       loading(true);

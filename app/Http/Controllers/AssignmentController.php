@@ -95,8 +95,8 @@ class AssignmentController extends Controller
     {
         if (isset($request->manufacturer_order_id)) {
             $manufacturerOrder = ManufacturerOrder::with([
-                    'manufacturerOrderDetails.contractDetail.price.product.boms.bomDetails'
-                ])
+                'manufacturerOrderDetails.contractDetail.price.product.boms.bomDetails'
+            ])
                 ->find($request->manufacturer_order_id);
 
             $assignment = new Assignment();
@@ -106,7 +106,7 @@ class AssignmentController extends Controller
                 foreach ($manufacturerOrder->manufacturerOrderDetails as $manufacturerOrderDetail) {
                     $bom = $manufacturerOrderDetail->contractDetail->price->product->boms->first();
                     if (isset($bom)) {
-                        foreach($bom->bomDetails as $bomDetail) {
+                        foreach ($bom->bomDetails as $bomDetail) {
                             $assignment->assignmentDetails()->create(
                                 [
                                     'product_id' => $bomDetail->product_id,
@@ -127,7 +127,7 @@ class AssignmentController extends Controller
                 }
             }
         }
-    
+
         return response()->json([
             'id' => $assignment->id,
             'status' => 'success'
@@ -148,17 +148,6 @@ class AssignmentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Assignment  $assignment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Assignment $assignment)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -167,7 +156,6 @@ class AssignmentController extends Controller
      */
     public function update(Request $request, Assignment $assignment)
     {
-        //
     }
 
     /**
