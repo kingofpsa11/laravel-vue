@@ -123,12 +123,13 @@ export default {
     },
     onReceived() {
       axios
-        .put(`api/manufacturer-orders/${this.$route.params.id}`, {
-          received: true
+        .post(`api/assignments`, {
+          manufacturer_order_id: this.id
         })
         .then(res => {
-          if (res.data.data === "success") {
-            this.$router.push("/");
+          console.log(res);
+          if (res.data.status === "success") {
+            this.$router.push(`/assignments/${res.data.id}`);
           }
         });
     }

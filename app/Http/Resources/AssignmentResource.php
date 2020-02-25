@@ -19,8 +19,8 @@ class AssignmentResource extends JsonResource
         return [
             'id' => $this->id,
             'number' => $this->number,
-            'factory_name' => $this->factory->name,
-            'factory_id' => $this->factory_id,
+            'factory_name' => $this->factory->name ?? '',
+            'factory_id' => $this->factory_id ?? '',
             'date' => $this->date,
             'status' => $this->status,
             'assignment_details' => AssignmentDetailResource::collection($this->assignmentDetails),

@@ -10,6 +10,7 @@ use App\ManufacturerOrderDetail;
 use App\Supplier;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -78,7 +79,14 @@ class ManufacturerOrderController extends Controller
         return $data->where(function ($q) use ($queries) {
             foreach ($queries as $field => $query) {
                 if (is_string($query)) {
-                    $q->where($field, 'LIKE', "%{$query}%");
+                    if ($field === 'manufacturer_order_number') {
+                        $q->whereHas('manufacturerOrder', function(Builder $quer) use ($query) {
+                            $quer->where('number', 'LIKE', "%{$query}%");
+                        }
+                        );
+                    } else {
+                        $q->where($field, 'LIKE', "%{$query}%");
+                    }
                 } else {
                     $start = Carbon::createFromFormat('Y-m-d', $query['start'])->startOfDay();
                     $end = Carbon::createFromFormat('Y-m-d', $query['end'])->endOfDay();
@@ -150,7 +158,7 @@ class ManufacturerOrderController extends Controller
      */
     public function update(Request $request, ManufacturerOrder $manufacturerOrder)
     {
-        //
+        
     }
 
     /**

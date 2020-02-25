@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\AssignmentDetail;
+use App\ManufacturerOrder;
 use App\Http\Resources\AssignmentResource;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -92,12 +93,41 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
-        $assignment = new Assignment();
-        if ($assignment->fill($request->all())->save()) {
-            foreach ($request->assignment_details as $detail) {
-                $assignment->assignmentDetails()->create($detail);
+        if (isset($request->manufacturer_order_id)) {
+            $manufacturerOrder = ManufacturerOrder::with([
+                    'manufacturerOrderDetails.contractDetail.price.product.boms.bomDetails'
+                ])
+                ->find($request->manufacturer_order_id);
+
+            $assignment = new Assignment();
+            $assignment->number = $this->getNewNumber();
+            $assignment->date = date('d/m/Y');
+            if ($assignment->save()) {
+                foreach ($manufacturerOrder->manufacturerOrderDetails as $manufacturerOrderDetail) {
+                    $bom = $manufacturerOrderDetail->contractDetail->price->product->boms->first();
+                    if (isset($bom)) {
+                        foreach($bom->bomDetails as $bomDetail) {
+                            $assignment->assignmentDetails()->create(
+                                [
+                                    'product_id' => $bomDetail->product_id,
+                                    'quantity' => $bomDetail->quantity * $manufacturerOrderDetail->contractDetail->quantity,
+                                    'contract_detail_id' => $manufacturerOrderDetail->contract_detail_id,
+                                    'deadline' => $manufacturerOrderDetail->contractDetail->deadline,
+                                ]
+                            );
+                        }
+                    }
+                }
+            }
+        } else {
+            $assignment = new Assignment();
+            if ($assignment->fill($request->all())->save()) {
+                foreach ($request->assignment_details as $detail) {
+                    $assignment->assignmentDetails()->create($detail);
+                }
             }
         }
+    
         return response()->json([
             'id' => $assignment->id,
             'status' => 'success'
@@ -112,7 +142,7 @@ class AssignmentController extends Controller
      */
     public function show(Assignment $assignment)
     {
-        $assignment->load('assignmentDetails.contractDetail.manufacturerOrderDetail.manufacturerOrder', 'assignmentDetails.product');
+        $assignment->load('assignmentDetails.contractDetail.manufacturerOrderDetail.manufacturerOrder', 'assignmentDetails.product', 'factory');
 
         return new AssignmentResource($assignment);
     }
