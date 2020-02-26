@@ -169,12 +169,14 @@ export default {
     this.assignment.date = dd + "/" + mm + "/" + yyyy;
 
     if (this.$route.params.id) {
-      this.getAssignments(this.$route.params.id);
+      this.id = this.$route.params.id;
+      this.getAssignments(this.id);
     }
   },
   data() {
     return {
       assignment: {
+        id: null,
         factory_id: "",
         number: "",
         date: "",
@@ -193,7 +195,7 @@ export default {
         ]
       },
       newItem: {
-        id: "",
+        id: null,
         manufacturer_order_number: "",
         contract_detail_id: "",
         product_id: "",
@@ -230,7 +232,7 @@ export default {
       let currentRoute = this.$route.path;
       if (currentRoute.includes("edit")) {
         axios
-          .put(currentRoute, this.assignment)
+          .put(`/api/assignments/${this.id}`, this.assignment)
           .then(res => {
             if (res.data.status === "success")
               this.$router.push("/assignments/" + res.data.id);

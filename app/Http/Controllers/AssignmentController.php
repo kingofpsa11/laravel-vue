@@ -43,14 +43,15 @@ class AssignmentController extends Controller
         foreach ($result as $value) {
             $results[] = [
                 'id' => $value->assignment_id,
-                'factory_name' => $value->assignment->factory_name,
-                'manufacturer_order_number' => $value->contractDetail->manufacturerOrderDetail->number,
+                'factory_name' => $value->assignment->factory->name ?? '',
+                'manufacturer_order_number' => $value->contractDetail->manufacturerOrderDetail->manufacturerOrder->number,
                 'number' => $value->assignment->number,
                 'product_name' => $value->product->name,
                 'product_code' => $value->product->code,
                 'quantity' => $value->quantity,
                 'date' => $value->assignment->date,
                 'deadline' => $value->deadline,
+                'status' => $value->status,
             ];
         }
 
@@ -119,6 +120,8 @@ class AssignmentController extends Controller
                     }
                 }
             }
+
+            $manufacturerOrder->contract()->update(['status' => 9]);
         } else {
             $assignment = new Assignment();
             if ($assignment->fill($request->all())->save()) {
@@ -156,6 +159,22 @@ class AssignmentController extends Controller
      */
     public function update(Request $request, Assignment $assignment)
     {
+        $assignment->update($request->all());
+        $assignment->assignmentDetails()->update(['status' => 9]);
+
+        foreach ($request->assignment_details as $detail) {
+            $id = $detail['id'];
+            unset($detail['id']);
+            $detail['status'] = 10;
+            $assignment->assignmentDetails()->updateOrCreate(['id' => $id], $detail);
+        }
+
+        $assignment->assignmentDetails()->where('status', 9)->delete();
+
+        return response()->json([
+            'id' => $assignment->id,
+            'status' => 'success'
+        ]);
     }
 
     /**

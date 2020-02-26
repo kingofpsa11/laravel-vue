@@ -86,7 +86,10 @@
               </b-tr>
             </b-tbody>
           </table>
-          <b-button variant="primary" @click="onReceived" v-if="isLoad"
+          <b-button
+            variant="primary"
+            @click="onReceived"
+            v-if="isLoad && manufacturer_order.status === 10"
             >Tạo phiếu giao việc</b-button
           >
         </b-col>

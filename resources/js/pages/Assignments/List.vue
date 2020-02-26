@@ -28,7 +28,6 @@
               >
             </b-button-group>
           </template>
-          </router-link>
         </v-server-table>
       </b-col>
     </b-row>
@@ -46,9 +45,9 @@ export default {
         "factory_name",
         "number",
         "date",
-        'manufacturer_order_number',
-        'product_code',
-        'product_name',
+        "manufacturer_order_number",
+        "product_code",
+        "product_name",
         "quantity",
         "deadline",
         "status",
@@ -59,7 +58,7 @@ export default {
           factory_name: "Đơn vị",
           number: "Số phiếu",
           manufacturer_order_number: "LSX",
-          product_code: 'Mã SP',
+          product_code: "Mã SP",
           product_name: "Tên sản phẩm",
           quantity: "Số lượng",
           date: "Ngày lập",
@@ -67,10 +66,29 @@ export default {
           status: "Trạng thái"
         },
         filterByColumn: true,
+        templates: {
+          status(row) {
+            let variant;
+            let content;
+            switch (row.status) {
+              case 10:
+                variant = "warning";
+                content = "Đang làm";
+                break;
+              case 0:
+                variant = "success";
+                content = "Đã xong";
+                break;
+              default:
+                break;
+            }
+            return `<a href='#!/${row.id}/edit'><i class='glyphicon glyphicon-edit'></i></a>`;
+          }
+        }
       },
       perPage: 10
     };
-  },
+  }
 };
 </script>
 

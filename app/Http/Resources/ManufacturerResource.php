@@ -22,7 +22,8 @@ class ManufacturerResource extends JsonResource
             'manufacturer_order_number' => $this->number,
             'contract_number' => $this->manufacturerOrderDetails->first()->contractDetail->contract->number,
             'date' => $this->date,
-            'manufacturer_order_details' => ManufacturerDetailResource::collection($this->manufacturerOrderDetails)
+            'status' => $this->contract->status,
+            'manufacturer_order_details' => ManufacturerDetailResource::collection($this->manufacturerOrderDetails),
         ];
     }
 }
