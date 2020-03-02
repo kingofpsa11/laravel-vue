@@ -29,6 +29,7 @@
 
 <script>
 import Vue from "vue";
+import status from "../../components/Status/Status.vue";
 
 export default {
   data() {
@@ -54,7 +55,9 @@ export default {
           status: "Trạng thái"
         },
         filterByColumn: true,
-        templates: {}
+        templates: {
+          status
+        }
       },
       perPage: 25
     };
