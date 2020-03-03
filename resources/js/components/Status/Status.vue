@@ -1,6 +1,8 @@
 <template>
-  <b-button variant="warning" v-if="data.status === 10">Đang chờ</b-button>
-  <b-button variant="success" v-else-if="data.status === 0"
+  <b-button variant="warning" v-if="data.status === 10" size="xs"
+    >Đang chờ</b-button
+  >
+  <b-button variant="success" v-else-if="data.status === 0" size="xs"
     >Hoàn thành</b-button
   >
 </template>
