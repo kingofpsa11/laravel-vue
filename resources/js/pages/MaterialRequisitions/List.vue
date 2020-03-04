@@ -11,18 +11,18 @@
       <b-col>
         <v-server-table
           :columns="columns"
-          url="/api/contracts"
+          url="/api/material-requisitions"
           :options="options"
         >
           <template v-slot:action="props">
             <b-button-group>
               <router-link
-                :to="`/contracts/${props.row.id}`"
+                :to="`/material-requisitions/${props.row.id}`"
                 class="btn btn-info"
                 >Xem</router-link
               >
               <router-link
-                :to="`/contracts/${props.row.id}/edit`"
+                :to="`/material-requisitions/${props.row.id}/edit`"
                 class="btn btn-warning"
                 >Sửa</router-link
               >
@@ -36,51 +36,34 @@
 
 <script>
 import Vue from "vue";
+import status from "../../components/Status/Status.vue";
 
 export default {
   data() {
     return {
       columns: [
-        "customer_id",
         "number",
-        "price_id",
-        "quantity",
-        "selling_price",
         "date",
-        "deadline",
-        "order",
+        "product_name",
+        "quantity",
         "status",
         "action"
       ],
       options: {
         headings: {
-          customer_id: "ĐVDH",
-          number: "Số đơn hàng",
-          price_id: "Tên sản phẩm",
+          number: "Số phiếu",
+          product_name: "Tên sản phẩm",
           quantity: "Số lượng",
-          selling_price: "Đơn giá",
           date: "Ngày lập",
-          deadline: "Tiến độ",
-          order: "LSX",
           status: "Trạng thái"
         },
         filterByColumn: true,
         templates: {
-          // date(h, row) {
-          //   return moment(row.date).format("DD-MM-YYYY");
-          // }
+          status
         }
       },
       perPage: 25
     };
-  },
-  methods: {
-    parseDate(date) {
-      const dateSet = date.toDateString().split(" ");
-      return `${date.toLocaleString("en-us", { month: "long" })} ${
-        dateSet[2]
-      }, ${dateSet[3]}`;
-    }
   }
 };
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\MaterialRequisition;
 use App\MaterialRequisitionDetail;
+use App\Http\Resources\MaterialRequisitionResource;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -81,6 +82,21 @@ class MaterialRequisitionController extends Controller
         });
     }
 
+    public function store(Request $request)
+    {
+        $materialRequisition = new MaterialRequisition;
+        $materialRequisition->fill($request->all())->save();
+
+        foreach ($request->material_requisition_details as $detail) {
+            $materialRequisition->materialRequisitionDetails()->create($detail);
+        }
+
+        return response()->json([
+            'id' => $materialRequisition->id,
+            'status' => 'success'
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -89,7 +105,8 @@ class MaterialRequisitionController extends Controller
      */
     public function show(MaterialRequisition $materialRequisition)
     {
-        //
+        $materialRequisition->load('materialRequisitionDetails.product', 'department');
+        return new MaterialRequisitionResource($materialRequisition);
     }
 
     /**

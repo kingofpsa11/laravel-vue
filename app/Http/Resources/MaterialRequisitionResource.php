@@ -18,6 +18,7 @@ class MaterialRequisitionResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
+            'date' => $this->date,
             'number' => $this->number,
             'department_name' => $this->department->name,
             'department_id' => $this->department_id,

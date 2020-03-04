@@ -64,7 +64,7 @@
             <b-tbody>
               <b-tr
                 v-for="(row,
-                index) in material_requistion.material_requistion_details"
+                index) in material_requistion.material_requisition_details"
                 :key="row.id"
               >
                 <td>{{ index + 1 }}</td>
@@ -72,6 +72,7 @@
                 <td>
                   <v-select
                     :options="productList"
+                    :selectOnTab="true"
                     @search="onSearchProduct"
                     :filterable="false"
                     @input="product => updateProduct(row, product)"
@@ -130,7 +131,7 @@ export default {
       material_requistion: {
         department_id: "",
         number: "",
-        material_requistion_details: [
+        material_requisition_details: [
           {
             product_code: "",
             product_name: "",
@@ -160,35 +161,48 @@ export default {
     this.material_requistion.date = dd + "/" + mm + "/" + yyyy;
 
     if (this.$route.params.id) {
-      this.getMaterialRequistions(this.$route.params.id);
+      this.id = this.$route.params.id;
+      this.getMaterialRequistions(this.id);
     }
   },
   computed: {
     count() {
-      return this.material_requistion.material_requistion_details.length;
+      return this.material_requistion.material_requisition_details.length;
     }
   },
   methods: {
     getMaterialRequistions(id) {
-      axios.get(`api/material_requistions/${id}`).then(res => {
+      axios.get(`api/material-requisitions/${id}`).then(res => {
         this.material_requistion = res.data.data;
       });
     },
     addRow() {
-      this.material_requistion.material_requistion_details.push({
+      this.material_requistion.material_requisition_details.push({
         ...this.newItem
       });
     },
     onSubmit() {
-      axios
-        .post("/api/material_requistions", this.material_requistion)
-        .then(res => {
-          if (res.data.status === "success")
-            this.$router.push("/material_requistions/" + res.data.id);
-        })
-        .catch(error => {
-          console.log(this.material_requistion);
-        });
+      let currentRoute = this.$route.path;
+      if (currentRoute.includes("edit")) {
+        axios
+          .put(
+            `/api/material-requisitions/${this.id}`,
+            this.material_requistion
+          )
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/material-requisitions/" + res.data.id);
+          })
+          .catch(error => {});
+      } else {
+        axios
+          .post("/api/material-requisitions", this.material_requistion)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/material-requisitions/" + res.data.id);
+          })
+          .catch(error => {});
+      }
     },
     onSearchDepartment(search, loading) {
       loading(true);
@@ -236,7 +250,7 @@ export default {
       row.product_code = product.code;
     },
     deleteRow(index) {
-      this.material_requistion.material_requistion_details.splice(index, 1);
+      this.material_requistion.material_requisition_details.splice(index, 1);
     }
   }
 };

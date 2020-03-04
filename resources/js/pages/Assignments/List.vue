@@ -36,6 +36,7 @@
 
 <script>
 import Vue from "vue";
+import status from "../../components/Status/Status.vue";
 
 export default {
   name: "Tables",
@@ -67,23 +68,7 @@ export default {
         },
         filterByColumn: true,
         templates: {
-          status(row) {
-            let variant;
-            let content;
-            switch (row.status) {
-              case 10:
-                variant = "warning";
-                content = "Đang làm";
-                break;
-              case 0:
-                variant = "success";
-                content = "Đã xong";
-                break;
-              default:
-                break;
-            }
-            return `<a href='#!/${row.id}/edit'><i class='glyphicon glyphicon-edit'></i></a>`;
-          }
+          status
         }
       },
       perPage: 10

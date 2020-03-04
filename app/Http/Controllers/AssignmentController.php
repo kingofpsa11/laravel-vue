@@ -116,6 +116,8 @@ class AssignmentController extends Controller
                                     'deadline' => $manufacturerOrderDetail->contractDetail->deadline,
                                 ]
                             );
+                            
+                            
                         }
                     }
                 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class MaterialRequisition extends Model
 {
@@ -33,5 +34,19 @@ class MaterialRequisition extends Model
     public function department()
     {
         return $this->belongsTo('App\Department');
+    }
+
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = Carbon::createFromFormat(config('app.date_format'), $value, 'Asia/Bangkok')->format('Y-m-d');
+    }
+
+    public function getDateAttribute($value)
+    {
+        if (isset($value)) {
+            return Carbon::createFromFormat('Y-m-d', $value, 'Asia/Bangkok')->format(config('app.date_format'));
+        }
+
+        return $value;
     }
 }

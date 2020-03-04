@@ -19,7 +19,7 @@ class MaterialRequisitionDetail extends Model
         'status' => 10
     ];
 
-    public function material()
+    public function materialRequisition()
     {
         return $this->belongsTo('App\MaterialRequisition');
     }
