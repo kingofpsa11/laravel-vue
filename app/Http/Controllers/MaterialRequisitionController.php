@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\MaterialRequisition;
 use App\MaterialRequisitionDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MaterialRequisitionController extends Controller
@@ -18,7 +19,7 @@ class MaterialRequisitionController extends Controller
         $results = [];
         extract($request->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
         $query = json_decode($query);
-        $data = MaterialRequisitionDetail::with(['assignment.factory', 'product', 'contractDetail.manufacturerOrderDetail.manufacturerOrder']);
+        $data = MaterialRequisitionDetail::with(['materialRequisition', 'product']);
 
         if (isset($query) && $query) {
             $data = $byColumn == 1 ?
@@ -39,15 +40,12 @@ class MaterialRequisitionController extends Controller
 
         foreach ($result as $value) {
             $results[] = [
-                'id' => $value->assignment_id,
-                'factory_name' => $value->assignment->factory->name ?? '',
-                'manufacturer_order_number' => $value->contractDetail->manufacturerOrderDetail->manufacturerOrder->number,
-                'number' => $value->assignment->number,
+                'id' => $value->material_requisition_id,
+                'number' => $value->materialRequisition->number,
                 'product_name' => $value->product->name,
                 'product_code' => $value->product->code,
                 'quantity' => $value->quantity,
-                'date' => $value->assignment->date,
-                'deadline' => $value->deadline,
+                'date' => $value->materialRequisition->date,
                 'status' => $value->status,
             ];
         }

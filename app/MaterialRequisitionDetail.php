@@ -18,4 +18,14 @@ class MaterialRequisitionDetail extends Model
     protected $attributes = [
         'status' => 10
     ];
+
+    public function material()
+    {
+        return $this->belongsTo('App\MaterialRequisition');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
+    }
 }
