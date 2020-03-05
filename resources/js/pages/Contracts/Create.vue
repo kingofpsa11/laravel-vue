@@ -85,6 +85,7 @@
                 <td>
                   <v-select
                     :options="priceList"
+                    :selectOnTab="true"
                     @search="onSearchPrice"
                     :filterable="false"
                     @input="price => updatePrice(row, price)"
@@ -166,6 +167,7 @@ export default {
   data() {
     return {
       contract: {
+        id: null,
         customer_id: "",
         number: "",
         contract_details: [
@@ -207,8 +209,16 @@ export default {
     };
   },
   created() {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
+    let yyyy = today.getFullYear();
+
+    this.contract.date = dd + "/" + mm + "/" + yyyy;
+
     if (this.$route.params.id) {
-      this.getContracts(this.$route.params.id);
+      this.id = this.$route.params.id;
+      this.getContracts(this.id);
     }
   },
   computed: {
@@ -229,18 +239,34 @@ export default {
         this.contract = res.data.data;
       });
     },
+    getNewNumber() {
+      axios.get(`api/contracts/getNewNumber/${this.contract.customer_id}`).then(res => {
+        console.log(res);
+        this.contract.number = res.data;
+      });
+    },
     addRow() {
       this.contract.contract_details.push({ ...this.newItem });
     },
     onSubmit() {
-      axios
-        .post("/api/contracts", this.contract)
-        .then(res => {
-          console.log(res.data);
-        })
-        .catch(error => {
-          console.log(this.fo);
-        });
+      let currentRoute = this.$route.path;
+      if (currentRoute.includes("edit")) {
+        axios
+          .put(`/api/contracts/${this.id}`, this.contract)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/contracts/" + res.data.id);
+          })
+          .catch(error => {});
+      } else {
+        axios
+          .post("/api/contracts", this.contract)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/contracts/" + res.data.id);
+          })
+          .catch(error => {});
+      }
     },
     onSearchCustomer(search, loading) {
       loading(true);
@@ -280,6 +306,7 @@ export default {
     updateCustomer(customer) {
       this.contract.customer_name = customer.label;
       this.contract.customer_id = customer.code;
+      this.getNewNumber();
     },
     updatePrice(row, price) {
       row.price_id = price.id;

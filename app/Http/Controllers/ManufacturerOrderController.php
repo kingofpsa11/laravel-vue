@@ -34,8 +34,8 @@ class ManufacturerOrderController extends Controller
         extract($request->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
         $query = json_decode($query);
         $data = ManufacturerOrderDetail::with(
-            'manufacturerOrder',
-            'contractDetail.price.product',
+            ['manufacturerOrder',
+            'contractDetail.price.product']
         );
 
         if (isset($query) && $query) {

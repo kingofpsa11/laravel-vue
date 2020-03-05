@@ -104,11 +104,14 @@ class ContractController extends Controller
         $value = $request->all();
         $this->contract->fill($value)->save();
 
-        foreach ($request->details as $detail) {
+        foreach ($request->contract_details as $detail) {
             $this->contract->contractDetails()->create($detail);
         }
 
-        return response('success', 201);
+        return response()->json([
+            'id' => $this->contract->id,
+            'status' => 'success'
+        ]);
     }
 
     /**
@@ -195,5 +198,10 @@ class ContractController extends Controller
     public function destroy(Contract $contract)
     {
         //
+    }
+
+    public function getNewNumber($customerId)
+    {
+        return Contract::whereYear('date', date('Y'))->where('customer_id', $customerId)->orderBy('number', 'desc')->first()->number + 1 ?? 1;
     }
 }

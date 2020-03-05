@@ -45,6 +45,7 @@ Route::resource('categories', 'CategoryController');
 Route::get('prices/search', 'PriceController@getPrice');
 Route::resource('prices', 'PriceController');
 Route::resource('boms', 'BomController');
+Route::get('contracts/getNewNumber/{customerId}', 'ContractController@getNewNumber');
 Route::resource('contracts', 'ContractController');
 Route::get('manufacturer-orders/search', 'ManufacturerOrderController@getManufacturerByStatus');
 Route::resource('manufacturer-orders', 'ManufacturerOrderController');
