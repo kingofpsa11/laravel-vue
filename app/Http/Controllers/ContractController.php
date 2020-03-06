@@ -29,7 +29,7 @@ class ContractController extends Controller
         $results = [];
         extract($request->only(['query', 'limit', 'page', 'orderBy', 'ascending', 'byColumn']));
         $query = json_decode($query);
-        $data = ContractDetail::with(['contract', 'price.product']);
+        $data = ContractDetail::with(['contract', 'price.product', 'manufacturerOrderDetail.manufacturerOrder']);
 
         if (isset($query) && $query) {
             $data = $byColumn == 1 ?
@@ -51,13 +51,15 @@ class ContractController extends Controller
         foreach ($result as $value) {
             $results[] = [
                 'id' => $value->contract_id,
-                'customer_id' => $value->contract->customer_id,
+                'customer_name' => $value->contract->customer->name,
                 'number' => $value->contract->number,
-                'price_id' => $value->price_id,
+                'price_id' => $value->price->product->name,
                 'quantity' => $value->quantity,
                 'selling_price' => $value->selling_price,
                 'date' => $value->contract->date,
                 'deadline' => $value->deadline,
+                'manufacturer_order_number' => $value->manufacturerOrderDetail->manufacturerOrder->number ?? '',
+                'status' => $value->status,
                 'order' => $value->order,
             ];
         }

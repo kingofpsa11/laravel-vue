@@ -36,51 +36,41 @@
 
 <script>
 import Vue from "vue";
+import status from "../../components/Status/Status.vue";
 
 export default {
   data() {
     return {
       columns: [
-        "customer_id",
+        "customer_name",
         "number",
         "price_id",
         "quantity",
         "selling_price",
         "date",
         "deadline",
-        "order",
+        "manufacturer_order_number",
         "status",
         "action"
       ],
       options: {
         headings: {
-          customer_id: "ĐVDH",
+          customer_name: "ĐVDH",
           number: "Số đơn hàng",
           price_id: "Tên sản phẩm",
           quantity: "Số lượng",
           selling_price: "Đơn giá",
           date: "Ngày lập",
           deadline: "Tiến độ",
-          order: "LSX",
+          manufacturer_order_number: "LSX",
           status: "Trạng thái"
         },
         filterByColumn: true,
-        templates: {
-          // date(h, row) {
-          //   return moment(row.date).format("DD-MM-YYYY");
-          // }
-        }
-      },
-      perPage: 25
+        perPage: 10,
+        perPageValues: [10, 25, 100],
+        templates: { status }
+      }
     };
-  },
-  methods: {
-    parseDate(date) {
-      const dateSet = date.toDateString().split(" ");
-      return `${date.toLocaleString("en-us", { month: "long" })} ${
-        dateSet[2]
-      }, ${dateSet[3]}`;
-    }
   }
 };
 </script>

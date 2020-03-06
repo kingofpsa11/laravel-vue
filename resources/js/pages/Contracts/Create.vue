@@ -170,6 +170,7 @@ export default {
         id: null,
         customer_id: "",
         number: "",
+        total_value: "",
         contract_details: [
           {
             product_code: "",
@@ -195,9 +196,9 @@ export default {
       customerList: [],
       priceList: [],
       supplierList: [
+        { value: 994, text: "Nhà máy" },
         { value: 74, text: "Litec" },
-        { value: 584, text: "Tấn Phát" },
-        { value: 994, text: "Nhà máy" }
+        { value: 584, text: "Tấn Phát" }
       ],
       currencyFormat: {
         alias: "integer",
@@ -230,6 +231,7 @@ export default {
       this.contract.contract_details.forEach(item => {
         totalValue += item.selling_price * item.quantity;
       });
+      this.total_value = totalValue;
       return totalValue;
     }
   },
@@ -240,10 +242,12 @@ export default {
       });
     },
     getNewNumber() {
-      axios.get(`api/contracts/getNewNumber/${this.contract.customer_id}`).then(res => {
-        console.log(res);
-        this.contract.number = res.data;
-      });
+      axios
+        .get(`api/contracts/getNewNumber/${this.contract.customer_id}`)
+        .then(res => {
+          console.log(res);
+          this.contract.number = res.data;
+        });
     },
     addRow() {
       this.contract.contract_details.push({ ...this.newItem });
