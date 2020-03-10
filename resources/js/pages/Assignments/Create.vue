@@ -79,6 +79,7 @@
                 <td>{{ row.product_code }}</td>
                 <td>
                   <v-select
+                    name="product_id"
                     :options="productList"
                     :selectOnTab="true"
                     @search="onSearchProduct"

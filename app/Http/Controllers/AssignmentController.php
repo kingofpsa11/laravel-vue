@@ -94,7 +94,7 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
-        if (isset($request->manufacturer_order_id)) {
+        if ($request->manufacturer_order_id) {
             $manufacturerOrder = ManufacturerOrder::with([
                 'manufacturerOrderDetails.contractDetail.price.product.boms.bomDetails'
             ])
@@ -103,21 +103,30 @@ class AssignmentController extends Controller
             $assignment = new Assignment();
             $assignment->number = $this->getNewNumber();
             $assignment->date = date('d/m/Y');
+
             if ($assignment->save()) {
                 foreach ($manufacturerOrder->manufacturerOrderDetails as $manufacturerOrderDetail) {
-                    $bom = $manufacturerOrderDetail->contractDetail->price->product->boms->first();
-                    if (isset($bom)) {
+                    $contractDetail = $manufacturerOrderDetail->contractDetail;
+                    $bom = $contractDetail->price->product->boms->first();
+
+                    if ($bom && $contractDetail->status === 10) {
+
+                        $manufacturerOrderDetail->contractDetail()->update(['status' => 9]);
+
                         foreach ($bom->bomDetails as $bomDetail) {
-                            $assignment->assignmentDetails()->create(
-                                [
-                                    'product_id' => $bomDetail->product_id,
-                                    'quantity' => $bomDetail->quantity * $manufacturerOrderDetail->contractDetail->quantity,
-                                    'contract_detail_id' => $manufacturerOrderDetail->contract_detail_id,
-                                    'deadline' => $manufacturerOrderDetail->contractDetail->deadline,
-                                ]
-                            );
-                            
-                            
+
+                            $issetBomDetail = $bomDetail->product->boms->first();
+
+                            if ($issetBomDetail) {
+                                $assignment->assignmentDetails()->create(
+                                    [
+                                        'product_id' => $bomDetail->product_id,
+                                        'quantity' => $bomDetail->quantity * $contractDetail->quantity,
+                                        'contract_detail_id' => $contractDetail->id,
+                                        'deadline' => $contractDetail->deadline,
+                                    ]
+                                );
+                            }
                         }
                     }
                 }

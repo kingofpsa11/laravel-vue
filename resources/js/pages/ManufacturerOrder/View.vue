@@ -104,8 +104,10 @@ import _ from "lodash";
 
 export default {
   created() {
-    if (this.$route.params.id) this.getManufacturer(this.$route.params.id);
-    this.id = this.$route.params.id;
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id;
+      this.getManufacturer(this.id);
+    }
   },
   data() {
     return {

@@ -155,9 +155,24 @@ export default {
       this.bom.bom_details.push({ ...this.newItem });
     },
     onSubmit() {
-      axios.post("/api/boms", this.bom).then(res => {
-        console.log(res.data);
-      });
+      let currentRoute = this.$route.path;
+      if (currentRoute.includes("edit")) {
+        axios
+          .put(`/api/boms/${this.id}`, this.bom)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/boms/" + res.data.id);
+          })
+          .catch(error => {});
+      } else {
+        axios
+          .post("/api/boms", this.bom)
+          .then(res => {
+            if (res.data.status === "success")
+              this.$router.push("/boms/" + res.data.id);
+          })
+          .catch(error => {});
+      }
     },
     onSearchProduct(search, loading) {
       loading(true);
