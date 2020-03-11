@@ -125,23 +125,19 @@ class BomController extends Controller
         $bom->update($request->all());
         $bom->bomDetails()->update(['status' => 9]);
 
-        for ($i = 0; $i < count($request->code); $i++) {
-            BomDetail::updateOrCreate(
-                [
-                    'id' => $request->bom_detail_id[$i]
-                ],
-                [
-                    'bom_id' => $bom->id,
-                    'product_id' => $request->bom_product_id[$i],
-                    'quantity' => $request->quantity[$i],
-                    'status' => 10
-                ]
-            );
-
-            $bom->bomDetails()->where('status', 9)->delete();
+        foreach($request->bom_details as $bomDetail) {
+            $id = $bomDetail['id'];
+            unset($bomDetail['id']);
+            $bomDetail['status'] = 10;
+            $bom->bomDetails()->updateOrCreate(['id' => $id], $bomDetail);
         }
 
-        return redirect()->route('boms.show', $bom);
+        $bom->bomDetails()->where('status', 9)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'id' => $bom->id
+        ]);
     }
 
     /**

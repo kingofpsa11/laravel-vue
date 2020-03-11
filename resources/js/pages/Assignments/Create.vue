@@ -183,7 +183,7 @@ export default {
         date: "",
         assignment_details: [
           {
-            id: "",
+            id: null,
             manufacturer_order_number: "",
             contract_detail_id: "",
             product_id: "",

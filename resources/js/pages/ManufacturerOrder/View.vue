@@ -135,7 +135,7 @@ export default {
         })
         .then(res => {
           if (res.data.status === "success") {
-            this.$router.push(`/assignments/${res.data.id}/edit`);
+            this.$router.push(`/assignments/list`);
           }
         });
     }

@@ -113,11 +113,13 @@ export default {
   data() {
     return {
       bom: {
+        id: null,
         product_name: "",
         product_id: "",
         name: "",
         bom_details: [
           {
+            id: null,
             product_id: "",
             product_code: "",
             product_name: "",
@@ -127,6 +129,7 @@ export default {
         ]
       },
       newItem: {
+        id: null,
         product_code: "",
         product_name: "",
         quantity: null,
@@ -137,7 +140,8 @@ export default {
   },
   created() {
     if (this.$route.params.id) {
-      this.getBom(this.$route.params.id);
+      this.id = this.$route.params.id;
+      this.getBom(this.id);
     }
   },
   computed: {

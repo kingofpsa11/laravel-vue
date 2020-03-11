@@ -100,25 +100,49 @@ class AssignmentController extends Controller
             ])
                 ->find($request->manufacturer_order_id);
 
-            $assignment = new Assignment();
-            $assignment->number = $this->getNewNumber();
-            $assignment->date = date('d/m/Y');
+            $assignment5 = null;
+            $assignment4 = null;
+            $assignment3 = null;
+            $assignment2 = null;
+            
+            foreach ($manufacturerOrder->manufacturerOrderDetails as $manufacturerOrderDetail) {
+                $contractDetail = $manufacturerOrderDetail->contractDetail;
 
-            if ($assignment->save()) {
-                foreach ($manufacturerOrder->manufacturerOrderDetails as $manufacturerOrderDetail) {
-                    $contractDetail = $manufacturerOrderDetail->contractDetail;
+                if ($contractDetail->price->product->category_id === 2) {
+                    if ($assignment5 === null) {
+                        $assignment = new Assignment();
+                        $assignment->number = $this->getNewNumber();
+                        $assignment->date = date('d/m/Y');
+                        $assignment->factory_id = 5;
+                        $assignment->save();
+                        $assignment5 = $assignment->id;
+                    }
+
+                    $assignment->assignmentDetails()->create(
+                        [
+                            'product_id' => $contractDetail->price->product->id,
+                            'quantity' => $contractDetail->quantity,
+                            'contract_detail_id' => $contractDetail->id,
+                            'deadline' => $contractDetail->deadline,
+                        ]
+                    );
+
                     $bom = $contractDetail->price->product->boms->first();
 
                     if ($bom && $contractDetail->status === 10) {
-
-                        $manufacturerOrderDetail->contractDetail()->update(['status' => 9]);
+                        // $manufacturerOrderDetail->contractDetail()->update(['status' => 9]);
 
                         foreach ($bom->bomDetails as $bomDetail) {
-
                             $issetBomDetail = $bomDetail->product->boms->first();
 
                             if ($issetBomDetail) {
-                                $assignment->assignmentDetails()->create(
+                                $assignmentCotToHan = new Assignment();
+                                $assignmentCotToHan->number = $this->getNewNumber();
+                                $assignmentCotToHan->date = date('d/m/Y');
+                                $assignmentCotToHan->factory_id = 4;
+                                $assignmentCotToHan->save();
+                                
+                                $assignmentCotToHan->assignmentDetails()->create(
                                     [
                                         'product_id' => $bomDetail->product_id,
                                         'quantity' => $bomDetail->quantity * $contractDetail->quantity,
@@ -126,10 +150,52 @@ class AssignmentController extends Controller
                                         'deadline' => $contractDetail->deadline,
                                     ]
                                 );
+
+                                
+                                foreach($issetBomDetail->bomDetails as $bomDetail) {
+                                    $issetBomDetailDetail = $issetBomDetail->product->boms->first();
+
+                                    if ($issetBomDetailDetail) {
+                                        $assignmentCotCatDap = new Assignment();
+                                        $assignmentCotCatDap->number = $this->getNewNumber();
+                                        $assignmentCotCatDap->date = date('d/m/Y');
+                                        $assignmentCotCatDap->factory_id = 3;
+                                        $assignmentCotCatDap->save();
+                                        
+                                        $assignmentCotCatDap->assignmentDetails()->create(
+                                            [
+                                                'product_id' => $bomDetail->product_id,
+                                                'quantity' => $bomDetail->quantity * $contractDetail->quantity,
+                                                'contract_detail_id' => $contractDetail->id,
+                                                'deadline' => $contractDetail->deadline,
+                                            ]
+                                        );
+                                    }
+                                }
                             }
                         }
                     }
-                }
+                } else {
+                    if ($contractDetail->status === 10) {
+                        if ($assignment2 === null) {
+                            $assignment = new Assignment();
+                            $assignment->number = $this->getNewNumber();
+                            $assignment->date = date('d/m/Y');
+                            $assignment->factory_id = 2;
+                            $assignment->save();
+                            $assignment2 = $assignment->id;
+                        }
+
+                        $assignment->assignmentDetails()->create(
+                            [
+                                'product_id' => $contractDetail->price->product->id,
+                                'quantity' => $contractDetail->quantity,
+                                'contract_detail_id' => $contractDetail->id,
+                                'deadline' => $contractDetail->deadline,
+                            ]
+                        );
+                    }
+                }                }
             }
 
             $manufacturerOrder->contract()->update(['status' => 9]);
@@ -143,7 +209,6 @@ class AssignmentController extends Controller
         }
 
         return response()->json([
-            'id' => $assignment->id,
             'status' => 'success'
         ]);
     }
@@ -201,6 +266,7 @@ class AssignmentController extends Controller
 
     public function getNewNumber()
     {
-        return Assignment::whereYear('date', date('Y'))->orderBy('number', 'desc')->first()->number + 1 ?? 1;
+        $number = Assignment::whereYear('date', date('Y'))->orderBy('number', 'desc')->first();
+        return $number === NULL ? 1 : ($number->number + 1);
     }
 }
