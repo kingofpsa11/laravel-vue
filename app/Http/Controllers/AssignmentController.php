@@ -153,7 +153,7 @@ class AssignmentController extends Controller
 
                                 
                                 foreach($issetBomDetail->bomDetails as $bomDetail) {
-                                    $issetBomDetailDetail = $issetBomDetail->product->boms->first();
+                                    $issetBomDetailDetail = $bomDetail->product->boms->first();
 
                                     if ($issetBomDetailDetail) {
                                         $assignmentCotCatDap = new Assignment();
@@ -195,7 +195,7 @@ class AssignmentController extends Controller
                             ]
                         );
                     }
-                }                }
+                }
             }
 
             $manufacturerOrder->contract()->update(['status' => 9]);
